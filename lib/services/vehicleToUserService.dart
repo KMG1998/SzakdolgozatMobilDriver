@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/User.dart';
 
 class VehicleToUserService {

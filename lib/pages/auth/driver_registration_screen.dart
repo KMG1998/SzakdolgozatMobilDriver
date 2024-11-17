@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
-import 'package:szakdolgozat_mobil_driver_side/widgets/custom_outlined_button.dart';
 
 class DriverRegistrationScreen extends StatelessWidget {
   const DriverRegistrationScreen({super.key});

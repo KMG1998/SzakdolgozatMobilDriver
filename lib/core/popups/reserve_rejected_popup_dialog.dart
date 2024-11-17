@@ -4,10 +4,7 @@ import 'package:szakdolgozat_mobil_driver_side/widgets/custom_outlined_button.da
 
 
 class ReserveRejectedPopupDialog extends StatelessWidget {
-  const ReserveRejectedPopupDialog({Key? key})
-      : super(
-          key: key,
-        );
+  const ReserveRejectedPopupDialog({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:logger/logger.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
 import 'package:szakdolgozat_mobil_driver_side/qubit/order/order_cubit.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/custom_text_form_field.dart';
-
-import '../../generated/assets.dart';
 
 class DriverDashboardScreen extends StatefulWidget {
   const DriverDashboardScreen({super.key});
@@ -40,6 +39,16 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
             ),
           ),
           child: BlocBuilder<OrderCubit, OrderState>(builder: (context, state) {
+            if (state.isLoading) {
+              return SizedBox(
+                width: 50,
+                height: 50,
+                child: LoadingIndicator(
+                  indicatorType: Indicator.ballClipRotatePulse,
+                  colors: [Colors.black],
+                ),
+              );
+            }
             if (state.currentOrder != null) {
               return Container(
                 width: double.maxFinite,
@@ -68,10 +77,14 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
             return Center(
               child: Column(
                 children: [
-                  Switch(value: state.driverAvailable, onChanged: (value){
-
-                    _logger.d(value);
-                  })
+                  Switch(
+                      value: state.driverAvailable,
+                      onChanged: (value) {
+                        if(value){
+                          context.read<OrderCubit>().setDriverAvailable();
+                        }
+                        _logger.d(value);
+                      })
                 ],
               ),
             );

@@ -1,4 +1,5 @@
-import 'dart:math';
+
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
@@ -23,8 +24,6 @@ class UserService {
 
   final _logger = Logger();
 
-  User? currentUser;
-
   UserService() {
     _dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
@@ -41,7 +40,7 @@ class UserService {
     return User.fromJson(resp.data as Map<String, dynamic>);
   }
 
-  Future<User> logUserIn(String email, String password) async {
+  Future<void> logUserIn(String email, String password) async {
     var resp = await _dio.post(
       '/signInDriver',
       data: {
@@ -51,7 +50,8 @@ class UserService {
     );
     final token = resp.headers['set-cookie']![0].split(';')[0].split('=')[1];
     await getIt.get<SecureStorage>().setValue('token', token);
-    currentUser = User.fromJson(resp.data as Map<String, dynamic>);
-    return currentUser!;
+    _logger.d(resp.data);
+    final currentUser = User.fromJson(resp.data);
+    await getIt.get<SecureStorage>().setValue('userData', jsonEncode(currentUser));
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
-import 'package:szakdolgozat_mobil_driver_side/pages/auth/login_screen.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({

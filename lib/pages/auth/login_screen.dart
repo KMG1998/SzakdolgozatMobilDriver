@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
-import 'package:szakdolgozat_mobil_driver_side/core/utils/validators.dart';
 import 'package:szakdolgozat_mobil_driver_side/qubit/login/login_cubit.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/custom_outlined_button.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/custom_text_form_field.dart';
@@ -128,9 +126,6 @@ class _LoginScreenState extends State<LoginScreen> {
   _loginButton() {
     return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) {
-        if (state.user != null) {
-          Navigator.pushNamed(context, AppRoutes.driverDashboardScreen);
-        }
         if (state.hasError) {
           Fluttertoast.showToast(
               msg: "Invalid email or password!",
@@ -140,6 +135,9 @@ class _LoginScreenState extends State<LoginScreen> {
               backgroundColor: Colors.red,
               textColor: Colors.white,
               fontSize: 16.0);
+          return;
+        }else if(!state.isLoading && !state.hasError){
+          Navigator.pushNamed(context, AppRoutes.driverDashboardScreen);
         }
       },
       builder: (context, state) {

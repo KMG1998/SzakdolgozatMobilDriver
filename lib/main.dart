@@ -11,6 +11,8 @@ import 'package:szakdolgozat_mobil_driver_side/theme/theme_helper.dart';
 import 'core/utils/service_locator.dart';
 import 'core/utils/size_utils.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
@@ -18,7 +20,7 @@ void main() {
   ]);
   ThemeHelper().changeTheme('primary');
   initServiceLocator();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -40,6 +42,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             home: const LoginScreen(),
             routes: AppRoutes.routes,
+            navigatorKey: navigatorKey,
           ),
         );
       },

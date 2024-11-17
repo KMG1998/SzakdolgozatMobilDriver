@@ -4,8 +4,6 @@ import 'package:logger/logger.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/userService.dart';
 
-import '../../models/User.dart';
-
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
@@ -27,21 +25,18 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith(
       isLoading: true,
       hasError: false,
-      user: null,
     ));
     try {
-      User? userData = await getIt.get<UserService>().logUserIn(emailInputController.text, passwordInputController.text);
+      await getIt.get<UserService>().logUserIn(emailInputController.text, passwordInputController.text);
       emit(state.copyWith(
         isLoading: false,
         hasError: false,
-        user: userData,
       ));
     } catch (e) {
       logger.e(e);
       emit(state.copyWith(
         isLoading: false,
         hasError: true,
-        user: null,
         errorMessage: e.toString(),
       ));
     }

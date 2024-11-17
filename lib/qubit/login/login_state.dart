@@ -4,21 +4,19 @@ part of 'login_cubit.dart';
 class LoginState {
   final bool isLoading;
   final bool hasError;
-  User? user;
   final String? errorMessage;
 
-  LoginState({
+  const LoginState({
     required this.isLoading,
     required this.hasError,
-    this.user,
     this.errorMessage,
   });
 
-  LoginState copyWith({isLoading, hasError, user ,errorMessage =""}) {
+  LoginState copyWith({isLoading, hasError, errorMessage = ""}) {
     return LoginState(
-        isLoading: isLoading,
-        hasError: hasError,
-        errorMessage: errorMessage,
-        user: user);
+      isLoading: isLoading ?? this.isLoading,
+      hasError: hasError ?? this.hasError,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
   }
 }

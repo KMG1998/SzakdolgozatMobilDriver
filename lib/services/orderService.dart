@@ -1,42 +1,54 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
+import 'package:szakdolgozat_mobil_driver_side/main.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/Order.dart';
+import 'package:szakdolgozat_mobil_driver_side/models/User.dart';
+import 'package:szakdolgozat_mobil_driver_side/routes/app_routes.dart';
+import 'package:szakdolgozat_mobil_driver_side/services/secureStorage.dart';
 
 class OrderService {
-  final dio = Dio(BaseOptions(
-      baseUrl: 'http://10.0.2.2:8085/order',
-      connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 3)));
+  final _dio = Dio(BaseOptions(
+    baseUrl: 'http://10.0.2.2:8085/order',
+    connectTimeout: const Duration(seconds: 5),
+    receiveTimeout: const Duration(seconds: 3),
+    headers: {
+      'Content-Type': 'application/json',
+      'accept': 'application/json',
+      'Access-Control-Request-Headers': 'Origin',
+      'Origin': 'mobileApp',
+    },
+    responseType: ResponseType.json,
+  ));
   Order? currentOrder;
 
-  static final OrderService _singleton = OrderService._internal();
-
-  factory OrderService() {
-    return _singleton;
-  }
-
-  OrderService._internal();
-
-  Future<Order> createOrder(String passengerId,String driverId,vehicleId) async {
-    var resp = await dio.post('/create',
-        data: {'customerId': passengerId, 'driverId': driverId, 'vehicleId':vehicleId},
-        options: Options(responseType: ResponseType.json, headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json',
-          'accept': 'application/json'
-        }));
-    currentOrder = Order.fromJson(resp.data as Map<String, dynamic>);
-    return currentOrder!;
+  OrderService() {
+    _dio.interceptors
+        .add(InterceptorsWrapper(onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
+      options.headers['cookie'] = 'token=${await getIt.get<SecureStorage>().getValue('token')};';
+      handler.next(options);
+    }));
+    _dio.interceptors
+        .add(InterceptorsWrapper(onResponse: (Response response, ResponseInterceptorHandler handler) async {
+      if (response.statusCode == 401) {
+        navigatorKey.currentState?.pushNamed(AppRoutes.driverRegistrationScreen);
+      }
+      handler.next(response);
+    }));
   }
 
   Future<Order> getLatestForDriver(String driverId) async {
-    var resp = await dio.get('/getLatestForDriver',
-        data: {'driverId': driverId},
-        options: Options(responseType: ResponseType.json, headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json',
-          'accept': 'application/json'
-        }));
+    final resp = await _dio.get(
+      '/getLatestForDriver',
+      data: {'driverId': driverId},
+    );
     currentOrder = Order.fromJson(resp.data as Map<String, dynamic>);
     return currentOrder!;
+  }
+
+  Future<bool> setDriverAvailable() async {
+    final resp = await _dio.post('/setDriverAvailable');
+    return resp.data as bool;
   }
 }
