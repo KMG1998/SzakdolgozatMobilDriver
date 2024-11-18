@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
 import 'package:szakdolgozat_mobil_driver_side/main.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/Order.dart';
-import 'package:szakdolgozat_mobil_driver_side/models/User.dart';
 import 'package:szakdolgozat_mobil_driver_side/routes/app_routes.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/secureStorage.dart';
 
@@ -48,7 +48,16 @@ class OrderService {
   }
 
   Future<bool> setDriverAvailable() async {
-    final resp = await _dio.post('/setDriverAvailable');
+    final currentPos = await Geolocator.getCurrentPosition();
+    final resp = await _dio.post('/setDriverAvailable', data: {
+      'driverLat': currentPos.latitude,
+      'driverLongit': currentPos.longitude,
+    });
     return resp.data as bool;
+  }
+
+  Future<bool> setDriverUnavailable() async {
+    final resp = await _dio.post('/setDriverUnavailable');
+    return resp.statusCode == 200;
   }
 }

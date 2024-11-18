@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:logger/logger.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
 import 'package:szakdolgozat_mobil_driver_side/qubit/order/order_cubit.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/custom_text_form_field.dart';
@@ -39,6 +41,16 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
             ),
           ),
           child: BlocBuilder<OrderCubit, OrderState>(builder: (context, state) {
+            if (state.hasError) {
+              Fluttertoast.showToast(
+                  msg: state.errorMessage ?? 'unknown error',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            }
             if (state.isLoading) {
               return SizedBox(
                 width: 50,
@@ -80,10 +92,11 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
                   Switch(
                       value: state.driverAvailable,
                       onChanged: (value) {
-                        if(value){
+                        if (value) {
                           context.read<OrderCubit>().setDriverAvailable();
+                          return;
                         }
-                        _logger.d(value);
+                        context.read<OrderCubit>().setDriverUnavailable();
                       })
                 ],
               ),
