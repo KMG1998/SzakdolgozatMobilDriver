@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:szakdolgozat_mobil_driver_side/theme/theme_helper.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     super.key,
-    this.alignment,
     this.width,
     this.scrollPadding,
     this.controller,
     this.focusNode,
-    this.autofocus = true,
+    this.autofocus = false,
     this.textStyle,
     this.obscureText = false,
     this.textInputAction = TextInputAction.next,
@@ -30,8 +30,6 @@ class CustomTextFormField extends StatelessWidget {
     this.enableSuggestions = true,
     this.autovalidateMode,
   });
-
-  final Alignment? alignment;
 
   final double? width;
 
@@ -84,84 +82,79 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return alignment != null
-        ? Align(
-            alignment: alignment ?? Alignment.center,
-            child: textFormFieldWidget(context),
-          )
-        : textFormFieldWidget(context);
+    return textFormFieldWidget(context);
   }
 
   Widget textFormFieldWidget(BuildContext context) => SizedBox(
-        width: width ?? double.maxFinite,
-        child: TextFormField(
-          scrollPadding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          controller: controller,
-          focusNode: focusNode ?? FocusNode(),
-          autofocus: autofocus!,
-          style: textStyle ?? theme.textTheme.titleLarge,
-          obscureText: obscureText!,
-          textInputAction: textInputAction,
-          keyboardType: textInputType,
-          maxLines: maxLines ?? 1,
-          decoration: decoration,
-          validator: validator,
-          autocorrect: autoCorrect!,
-          enableSuggestions: enableSuggestions!,
-          autovalidateMode: autovalidateMode,
-        ),
-      );
+    width: width ?? double.maxFinite,
+    child: TextFormField(
+      scrollPadding:
+      EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      controller: controller,
+      focusNode: focusNode ?? FocusNode(),
+      autofocus: autofocus!,
+      style: textStyle ?? theme.textTheme.titleMedium,
+      obscureText: obscureText!,
+      textInputAction: textInputAction,
+      keyboardType: textInputType,
+      maxLines: maxLines ?? 1,
+      decoration: decoration,
+      validator: validator,
+      autocorrect: autoCorrect!,
+      enableSuggestions: enableSuggestions!,
+      autovalidateMode: autovalidateMode,
+    ),
+  );
   InputDecoration get decoration => InputDecoration(
-        hintText: hintText ?? "",
-        hintStyle: hintStyle ?? theme.textTheme.titleLarge,
-        prefixIcon: prefix,
-        prefixIconConstraints: prefixConstraints,
-        suffixIcon: suffix,
-        suffixIconConstraints: suffixConstraints,
-        isDense: true,
-        contentPadding: contentPadding ?? EdgeInsets.all(12.h),
-        fillColor: fillColor ?? theme.colorScheme.onSecondaryContainer,
-        filled: filled,
-        border: borderDecoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.h),
-              borderSide: BorderSide(
-                color: appTheme.black900,
-                width: 2,
-              ),
-            ),
-        enabledBorder: borderDecoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.h),
-              borderSide: BorderSide(
-                color: appTheme.black900,
-                width: 2,
-              ),
-            ),
-        focusedBorder: borderDecoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.h),
-              borderSide: BorderSide(
-                color: appTheme.black900,
-                width: 2,
-              ),
-            ),
-      );
+    hintText: hintText ?? "",
+    hintStyle: hintStyle ?? theme.textTheme.titleLarge,
+    prefixIcon: prefix,
+    prefixIconConstraints: prefixConstraints,
+    suffixIcon: suffix,
+    suffixIconConstraints: suffixConstraints,
+    isDense: true,
+    contentPadding: contentPadding ?? EdgeInsets.symmetric(vertical:5.h, horizontal: 20.w),
+    fillColor: fillColor ?? theme.colorScheme.onSecondaryContainer,
+    filled: filled,
+    border: borderDecoration ??
+        OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.h),
+          borderSide: BorderSide(
+            color: appTheme.black900,
+            width: 2,
+          ),
+        ),
+    enabledBorder: borderDecoration ??
+        OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.h),
+          borderSide: BorderSide(
+            color: appTheme.black900,
+            width: 2,
+          ),
+        ),
+    focusedBorder: borderDecoration ??
+        OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.h),
+          borderSide: BorderSide(
+            color: appTheme.black900,
+            width: 2,
+          ),
+        ),
+  );
 }
 
 extension TextFormFieldStyleHelper on CustomTextFormField {
   static UnderlineInputBorder get underLineBlack => UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: appTheme.black900,
-        ),
-      );
+    borderSide: BorderSide(
+      color: appTheme.black900,
+    ),
+  );
   static OutlineInputBorder get outlineBlackTL20 => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20.h),
-        borderSide: BorderSide.none,
-      );
+    borderRadius: BorderRadius.circular(20.h),
+    borderSide: BorderSide.none,
+  );
   static OutlineInputBorder get fillPrimary => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20.h),
-        borderSide: BorderSide.none,
-      );
+    borderRadius: BorderRadius.circular(20.h),
+    borderSide: BorderSide.none,
+  );
 }

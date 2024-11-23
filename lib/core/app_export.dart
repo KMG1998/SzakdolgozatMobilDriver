@@ -1,4 +1,3 @@
-export 'package:szakdolgozat_mobil_driver_side/core/utils/size_utils.dart';
 export 'package:szakdolgozat_mobil_driver_side/routes/app_routes.dart';
 export 'package:szakdolgozat_mobil_driver_side/theme/app_decoration.dart';
 export 'package:szakdolgozat_mobil_driver_side/theme/custom_text_style.dart';

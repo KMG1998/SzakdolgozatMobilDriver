@@ -21,11 +21,12 @@ class OrderCubit extends Cubit<OrderState> {
         await permission.request();
       }
       if (!await Geolocator.isLocationServiceEnabled() || await permission.isDenied) {
-        emit(state.copyWith(hasError: true, errorMessage: 'Kérjük, kapcsolja be a GPS-t!'));
+        emit(state.copyWith(hasError: true, errorMessage: 'Kérjük, engedélyezze és kapcsolja be a GPS-t!'));
+        return;
       }
       emit(state.copyWith(isLoading: true));
-      final success = await getIt.get<OrderService>().setDriverAvailable();
-      if (success) {
+      final streamId = await getIt.get<OrderService>().setDriverAvailable();
+      if (streamId.isNotEmpty) {
         emit(state.copyWith(isLoading: false, driverAvailable: true));
       } else {
         emit(state.copyWith(isLoading: false, driverAvailable: false));

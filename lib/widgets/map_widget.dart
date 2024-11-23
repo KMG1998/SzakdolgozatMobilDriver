@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
 import 'package:szakdolgozat_mobil_driver_side/qubit/order/order_cubit.dart';
 
 class MapWidget extends StatefulWidget {
@@ -25,7 +25,7 @@ class _MapWidgetState extends State<MapWidget> {
     return BlocBuilder<OrderCubit, OrderState>(
       builder: (context, state) {
         return SizedBox(
-          width: 400.v,
+          width: 400.w,
           height: 800.h,
           child: GoogleMap(
             mapType: MapType.hybrid,

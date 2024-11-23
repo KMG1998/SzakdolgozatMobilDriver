@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:szakdolgozat_mobil_driver_side/pages/auth/login_screen.dart';
 import 'package:szakdolgozat_mobil_driver_side/qubit/login/login_cubit.dart';
 import 'package:szakdolgozat_mobil_driver_side/qubit/order/order_cubit.dart';
@@ -9,7 +10,6 @@ import 'package:szakdolgozat_mobil_driver_side/routes/app_routes.dart';
 import 'package:szakdolgozat_mobil_driver_side/theme/theme_helper.dart';
 
 import 'core/utils/service_locator.dart';
-import 'core/utils/size_utils.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -29,8 +29,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Sizer(
-      builder: (context, orientation, deviceType) {
+    return ScreenUtilInit(
+      designSize: const Size(675,948),
+      builder: (_ , child) {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => LoginCubit()),

@@ -5,6 +5,7 @@ class Assets {
   static const String authDriverRegistrationScreen = 'lib/pages/auth/driver_registration_screen.dart';
   static const String authLoginScreen = 'lib/pages/auth/login_screen.dart';
   static const String coreAppExport = 'lib/core/app_export.dart';
+  static const String coreEnums = 'lib/core/enums.dart';
   static const String driverDriverDashboardScreen = 'lib/pages/driver/driver_dashboard_screen.dart';
   static const String fontsJetBrainsMonoRomanRegular = 'lib/assets/fonts/JetBrainsMonoRomanRegular.ttf';
   static const String generatedAssets = 'lib/generated/assets.dart';
@@ -24,6 +25,7 @@ class Assets {
   static const String loginLoginCubit = 'lib/qubit/login/login_cubit.dart';
   static const String loginLoginState = 'lib/qubit/login/login_state.dart';
   static const String modelsOrder = 'lib/models/Order.dart';
+  static const String modelsStreamData = 'lib/models/StreamData.dart';
   static const String modelsUser = 'lib/models/User.dart';
   static const String orderOrderCubit = 'lib/qubit/order/order_cubit.dart';
   static const String orderOrderState = 'lib/qubit/order/order_state.dart';
@@ -34,6 +36,7 @@ class Assets {
   static const String routesAppRoutes = 'lib/routes/app_routes.dart';
   static const String servicesOrderService = 'lib/services/orderService.dart';
   static const String servicesSecureStorage = 'lib/services/secureStorage.dart';
+  static const String servicesStreamService = 'lib/services/streamService.dart';
   static const String servicesUserService = 'lib/services/userService.dart';
   static const String servicesVehicleToUserService = 'lib/services/vehicleToUserService.dart';
   static const String themeAppDecoration = 'lib/theme/app_decoration.dart';
@@ -45,7 +48,6 @@ class Assets {
   static const String utilsDateTimeUtils = 'lib/core/utils/date_time_utils.dart';
   static const String utilsImageConstant = 'lib/core/utils/image_constant.dart';
   static const String utilsServiceLocator = 'lib/core/utils/service_locator.dart';
-  static const String utilsSizeUtils = 'lib/core/utils/size_utils.dart';
   static const String utilsValidators = 'lib/core/utils/validators.dart';
   static const String widgetsBaseButton = 'lib/widgets/base_button.dart';
   static const String widgetsCustomIconButton = 'lib/widgets/custom_icon_button.dart';

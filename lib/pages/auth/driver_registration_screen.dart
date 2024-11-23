@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
 
 class DriverRegistrationScreen extends StatelessWidget {
@@ -11,8 +12,8 @@ class DriverRegistrationScreen extends StatelessWidget {
         extendBody: true,
         extendBodyBehindAppBar: true,
         body: Container(
-          width: SizeUtils.width,
-          height: SizeUtils.height,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: const Alignment(0.5, 0),
@@ -28,13 +29,13 @@ class DriverRegistrationScreen extends StatelessWidget {
             width: double.maxFinite,
             child: Column(
               children: [
-                SizedBox(height: 200.v),
+                SizedBox(height: 200.w),
                 Expanded(
                   child: Container(
                     margin: EdgeInsets.only(
                       left: 53.h,
                       right: 53.h,
-                      bottom: 383.v,
+                      bottom: 383.w,
                     ),
                     decoration: AppDecoration.outlineBlack9007.copyWith(
                       borderRadius: BorderRadiusStyle.roundedBorder20,

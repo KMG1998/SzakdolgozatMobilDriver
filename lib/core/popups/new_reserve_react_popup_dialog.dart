@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/image_constant.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/custom_outlined_button.dart';
@@ -20,9 +21,9 @@ class NewReserveReactPopupDialog extends StatelessWidget {
         margin: EdgeInsets.only(
           left: 53.h,
           right: 53.h,
-          bottom: 161.v,
+          bottom: 161.w,
         ),
-        padding: EdgeInsets.symmetric(vertical: 11.v),
+        padding: EdgeInsets.symmetric(vertical: 11.w),
         decoration: AppDecoration.fillOnSecondaryContainer.copyWith(
           borderRadius: BorderRadiusStyle.roundedBorder20,
         ),
@@ -31,7 +32,7 @@ class NewReserveReactPopupDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildBookingDetailsEditText(context),
-            SizedBox(height: 44.v),
+            SizedBox(height: 44.w),
             Padding(
               padding: EdgeInsets.only(
                 left: 39.h,
@@ -45,8 +46,8 @@ class NewReserveReactPopupDialog extends StatelessWidget {
                       borderRadius: BorderRadiusStyle.circleBorder15,
                     ),
                     child: Container(
-                      height: 20.adaptSize,
-                      width: 20.adaptSize,
+                      height: 20.h,
+                      width: 20.w,
                       decoration: BoxDecoration(
                         color: appTheme.black900,
                         borderRadius: BorderRadius.circular(
@@ -58,7 +59,7 @@ class NewReserveReactPopupDialog extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(
                       left: 16.h,
-                      bottom: 2.v,
+                      bottom: 2.w,
                     ),
                     child: Text(
                       "azonnali",
@@ -70,7 +71,7 @@ class NewReserveReactPopupDialog extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 38.v),
+            SizedBox(height: 38.w),
             Padding(
               padding: EdgeInsets.only(left: 25.h),
               child: Text(
@@ -78,7 +79,7 @@ class NewReserveReactPopupDialog extends StatelessWidget {
                 style: theme.textTheme.titleLarge,
               ),
             ),
-            SizedBox(height: 28.v),
+            SizedBox(height: 28.w),
             Padding(
               padding: EdgeInsets.only(left: 25.h),
               child: Text(
@@ -86,7 +87,7 @@ class NewReserveReactPopupDialog extends StatelessWidget {
                 style: theme.textTheme.titleLarge,
               ),
             ),
-            SizedBox(height: 30.v),
+            SizedBox(height: 30.w),
             Padding(
               padding: EdgeInsets.only(left: 25.h),
               child: Text(
@@ -94,7 +95,7 @@ class NewReserveReactPopupDialog extends StatelessWidget {
                 style: theme.textTheme.titleLarge,
               ),
             ),
-            SizedBox(height: 28.v),
+            SizedBox(height: 28.w),
             Padding(
               padding: EdgeInsets.only(
                 left: 25.h,
@@ -104,8 +105,8 @@ class NewReserveReactPopupDialog extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
-                      top: 10.v,
-                      bottom: 12.v,
+                      top: 10.w,
+                      bottom: 12.w,
                     ),
                     child: Text(
                       "indulási dátum: ",
@@ -116,7 +117,7 @@ class NewReserveReactPopupDialog extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 28.v),
+            SizedBox(height: 28.w),
             Padding(
               padding: EdgeInsets.only(
                 left: 25.h,
@@ -127,8 +128,8 @@ class NewReserveReactPopupDialog extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
-                      top: 10.v,
-                      bottom: 12.v,
+                      top: 10.w,
+                      bottom: 12.w,
                     ),
                     child: Text(
                       "indulási idő: ",
@@ -139,7 +140,7 @@ class NewReserveReactPopupDialog extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 25.v),
+            SizedBox(height: 25.w),
             Padding(
               padding: EdgeInsets.only(
                 left: 25.h,
@@ -149,8 +150,8 @@ class NewReserveReactPopupDialog extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
-                      top: 12.v,
-                      bottom: 10.v,
+                      top: 12.w,
+                      bottom: 10.w,
                     ),
                     child: Text(
                       "személyek száma:",
@@ -161,14 +162,14 @@ class NewReserveReactPopupDialog extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 25.v),
+            SizedBox(height: 25.w),
             CustomImageView(
               imagePath: ImageConstant.imgResponseButtons,
-              height: 78.v,
+              height: 78.w,
               width: 347.h,
               alignment: Alignment.center,
             ),
-            SizedBox(height: 20.v),
+            SizedBox(height: 20.w),
           ],
         ),
       ),
@@ -193,7 +194,7 @@ class NewReserveReactPopupDialog extends StatelessWidget {
       text: "előjegyzés",
       value: "előjegyzés",
       groupValue: radioGroup,
-      padding: EdgeInsets.symmetric(vertical: 1.v),
+      padding: EdgeInsets.symmetric(vertical: 1.w),
       onChange: (value) {
         radioGroup = value;
       },

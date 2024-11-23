@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
@@ -47,13 +45,13 @@ class OrderService {
     return currentOrder!;
   }
 
-  Future<bool> setDriverAvailable() async {
+  Future<String> setDriverAvailable() async {
     final currentPos = await Geolocator.getCurrentPosition();
     final resp = await _dio.post('/setDriverAvailable', data: {
       'driverLat': currentPos.latitude,
       'driverLongit': currentPos.longitude,
     });
-    return resp.data as bool;
+    return resp.data as String;
   }
 
   Future<bool> setDriverUnavailable() async {

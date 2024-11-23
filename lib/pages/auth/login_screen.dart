@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
@@ -25,8 +26,8 @@ class _LoginScreenState extends State<LoginScreen> {
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
         body: Container(
-          width: SizeUtils.width,
-          height: SizeUtils.height,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: const Alignment(0.5, 0),
@@ -42,41 +43,41 @@ class _LoginScreenState extends State<LoginScreen> {
             width: double.maxFinite,
             child: Column(
               children: [
-                SizedBox(height: 23.v),
+                SizedBox(height: 23.w),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: 164.v),
+                      padding: EdgeInsets.only(bottom: 164.w),
                       child: Form(
                         key: context.read<LoginCubit>().formKey,
                         child: Column(
                           children: [
                             CustomImageView(
                               imagePath: Assets.imagesImgMagantaxiLogo1,
-                              height: 319.adaptSize,
-                              width: 319.adaptSize,
+                              height: 319.h,
+                              width: 319.w,
                             ),
-                            SizedBox(height: 53.v),
+                            SizedBox(height: 20.h),
                             Text(
                               "E-mail",
                               style: theme.textTheme.headlineLarge,
                             ),
-                            SizedBox(height: 7.v),
+                            SizedBox(height: 7.h),
                             CustomTextFormField(
-                              width: 351.v,
+                              width: 500.w,
                               controller: context.read<LoginCubit>().emailInputController,
                               validator: (email) => Validators.emailValidator(email),
                               focusNode: context.read<LoginCubit>().emailFocus,
                               autofocus: false,
                             ),
-                            SizedBox(height: 31.v),
+                            SizedBox(height: 31.h),
                             Text(
                               "Jelszó",
                               style: theme.textTheme.headlineLarge,
                             ),
-                            SizedBox(height: 7.v),
+                            SizedBox(height: 7.h),
                             CustomTextFormField(
-                              width: 351.v,
+                              width: 500.w,
                               controller: context.read<LoginCubit>().passwordInputController,
                               textInputAction: TextInputAction.done,
                               obscureText: true,
@@ -86,16 +87,16 @@ class _LoginScreenState extends State<LoginScreen> {
                               validator: (password) => Validators.passwordValidator(password),
                               autofocus: false,
                             ),
-                            SizedBox(height: 32.v),
+                            SizedBox(height: 32.h),
                             _loginButton(),
-                            SizedBox(height: 52.v),
+                            SizedBox(height: 52.h),
                             Text(
                               "Elfelejtett jelszó",
                               style: theme.textTheme.bodyMedium!.copyWith(
                                 decoration: TextDecoration.underline,
                               ),
                             ),
-                            SizedBox(height: 56.v),
+                            SizedBox(height: 56.w),
                             _registerButton(context),
                           ],
                         ),
@@ -147,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
             width: 269,
             text: "Belépés",
             buttonStyle: CustomButtonStyles.outlineBlack,
-            buttonTextStyle: theme.textTheme.bodyMedium!,
+            buttonTextStyle: theme.textTheme.bodyLarge!,
             onPressed: () async {
               await context.read<LoginCubit>().login();
             },

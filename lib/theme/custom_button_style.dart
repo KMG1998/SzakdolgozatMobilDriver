@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
 import 'package:flutter/material.dart';
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/custom_outlined_button.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/custom_radio_button.dart';
@@ -21,9 +22,9 @@ class NewReservePopupDialog extends StatelessWidget {
         margin: EdgeInsets.only(
           left: 53.h,
           right: 53.h,
-          bottom: 116.v,
+          bottom: 116.w,
         ),
-        padding: EdgeInsets.symmetric(vertical: 11.v),
+        padding: EdgeInsets.symmetric(vertical: 11.w),
         decoration: AppDecoration.fillOnSecondaryContainer.copyWith(
           borderRadius: BorderRadiusStyle.roundedBorder20,
         ),
@@ -39,16 +40,16 @@ class NewReservePopupDialog extends StatelessWidget {
               borderDecoration: TextFormFieldStyleHelper.underLineBlack,
               filled: false,
             ),
-            SizedBox(height: 44.v),
+            SizedBox(height: 44.w),
             _buildOrderTypeSelect(context),
-            SizedBox(height: 40.v),
+            SizedBox(height: 40.w),
             Align(
               alignment: Alignment.center,
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 25.h),
                 padding: EdgeInsets.symmetric(
                   horizontal: 104.h,
-                  vertical: 8.v,
+                  vertical: 8.w,
                 ),
                 decoration: AppDecoration.outlineBlack9004.copyWith(
                   borderRadius: BorderRadiusStyle.roundedBorder20,
@@ -57,7 +58,7 @@ class NewReservePopupDialog extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 3.v),
+                    SizedBox(height: 3.w),
                     Text(
                       "indulási cím kiválasztása",
                       style: theme.textTheme.titleLarge!.copyWith(
@@ -68,7 +69,7 @@ class NewReservePopupDialog extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 23.v),
+            SizedBox(height: 23.w),
             Padding(
               padding: EdgeInsets.only(left: 25.h),
               child: Text(
@@ -76,7 +77,7 @@ class NewReservePopupDialog extends StatelessWidget {
                 style: theme.textTheme.titleLarge,
               ),
             ),
-            SizedBox(height: 60.v),
+            SizedBox(height: 60.w),
             Align(
               alignment: Alignment.center,
               child: Container(
@@ -86,7 +87,7 @@ class NewReservePopupDialog extends StatelessWidget {
                 ),
                 padding: EdgeInsets.symmetric(
                   horizontal: 104.h,
-                  vertical: 8.v,
+                  vertical: 8.w,
                 ),
                 decoration: AppDecoration.outlineBlack9004.copyWith(
                   borderRadius: BorderRadiusStyle.roundedBorder20,
@@ -95,7 +96,7 @@ class NewReservePopupDialog extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 3.v),
+                    SizedBox(height: 3.w),
                     Text(
                       "érkezési cím kiválasztása",
                       style: theme.textTheme.titleLarge!.copyWith(
@@ -106,7 +107,7 @@ class NewReservePopupDialog extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 22.v),
+            SizedBox(height: 22.w),
             Padding(
               padding: EdgeInsets.only(left: 27.h),
               child: Text(
@@ -114,7 +115,7 @@ class NewReservePopupDialog extends StatelessWidget {
                 style: theme.textTheme.titleLarge,
               ),
             ),
-            SizedBox(height: 63.v),
+            SizedBox(height: 63.w),
             Padding(
               padding: EdgeInsets.only(
                 left: 27.h,
@@ -124,8 +125,8 @@ class NewReservePopupDialog extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
-                      top: 12.v,
-                      bottom: 10.v,
+                      top: 12.w,
+                      bottom: 10.w,
                     ),
                     child: Text(
                       "személyek száma:",
@@ -141,13 +142,13 @@ class NewReservePopupDialog extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 165.v),
+            SizedBox(height: 165.w),
             CustomOutlinedButton(
               text: "tovább",
               margin: EdgeInsets.symmetric(horizontal: 25.h),
               alignment: Alignment.center,
             ),
-            SizedBox(height: 23.v),
+            SizedBox(height: 23.w),
           ],
         ),
       ),
@@ -167,7 +168,7 @@ class NewReservePopupDialog extends StatelessWidget {
             text: "azonnali",
             value: radioList[0],
             groupValue: radioGroup,
-            padding: EdgeInsets.symmetric(vertical: 1.v),
+            padding: EdgeInsets.symmetric(vertical: 1.w),
             onChange: (value) {
               radioGroup = value;
             },
@@ -178,7 +179,7 @@ class NewReservePopupDialog extends StatelessWidget {
               text: "előjegyzés",
               value: radioList[1],
               groupValue: radioGroup,
-              padding: EdgeInsets.symmetric(vertical: 1.v),
+              padding: EdgeInsets.symmetric(vertical: 1.w),
               onChange: (value) {
                 radioGroup = value;
               },
