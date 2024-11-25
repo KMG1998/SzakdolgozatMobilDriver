@@ -2,7 +2,10 @@
     <application
         android:label="szakdolgozat_mobil_driver_side"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAqSuEn0aAlAx37yRyafg6WF_xNOOwUI38"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

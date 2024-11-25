@@ -17,7 +17,7 @@ class ImageConstant {
   static String imgArrowUp = '$imagePath/img_arrow_up.svg';
 
   static String imgArrowDownBlack900 =
-      '$imagePath/img_arrow_down_black_900.svg';
+      '$imagePath/arrow_down.svg';
 
   // new_reserve_wait images
   static String imgImage1 = '$imagePath/img_image_1.png';

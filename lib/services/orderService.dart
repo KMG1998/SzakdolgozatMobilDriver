@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:logger/logger.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
 import 'package:szakdolgozat_mobil_driver_side/main.dart';
-import 'package:szakdolgozat_mobil_driver_side/models/Order.dart';
 import 'package:szakdolgozat_mobil_driver_side/routes/app_routes.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/secureStorage.dart';
+import 'package:szakdolgozat_mobil_driver_side/services/streamService.dart';
 
 class OrderService {
   final _dio = Dio(BaseOptions(
@@ -19,7 +20,9 @@ class OrderService {
     },
     responseType: ResponseType.json,
   ));
-  Order? currentOrder;
+
+  final _logger = Logger();
+
 
   OrderService() {
     _dio.interceptors
@@ -36,15 +39,6 @@ class OrderService {
     }));
   }
 
-  Future<Order> getLatestForDriver(String driverId) async {
-    final resp = await _dio.get(
-      '/getLatestForDriver',
-      data: {'driverId': driverId},
-    );
-    currentOrder = Order.fromJson(resp.data as Map<String, dynamic>);
-    return currentOrder!;
-  }
-
   Future<String> setDriverAvailable() async {
     final currentPos = await Geolocator.getCurrentPosition();
     final resp = await _dio.post('/setDriverAvailable', data: {
@@ -55,7 +49,9 @@ class OrderService {
   }
 
   Future<bool> setDriverUnavailable() async {
-    final resp = await _dio.post('/setDriverUnavailable');
+    final resp = await _dio.post('/setDriverUnavailable', data: {
+      'webSocketChannelId': getIt.get<StreamService>().getCurrentChannelId(),
+    });
     return resp.statusCode == 200;
   }
 }

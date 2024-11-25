@@ -2,13 +2,11 @@ part of 'order_cubit.dart';
 
 @immutable
 class OrderState {
-  final Order? currentOrder;
+  /*final Order? currentOrder;
   final Position? currentPassengerPos;
   final bool isLoading;
   final bool hasError;
   final bool driverAvailable;
-  final String? errorMessage;
-  final List<PointLatLng>? currentRoute;
 
   const OrderState({
     this.currentOrder,
@@ -30,5 +28,22 @@ class OrderState {
       currentRoute: currentRoute ?? this.currentRoute,
       currentPassengerPos: currentPassengerPos ?? this.currentPassengerPos,
     );
-  }
+  }*/
 }
+
+class OrderWaiting extends OrderState{
+  final bool driverActive;
+  final String? errorMessage;
+
+  OrderWaiting({required this.driverActive, this.errorMessage});
+}
+
+class OrderLoading extends OrderState{}
+
+class OrderActive extends OrderState{
+  final List<PointLatLng> currentRoute;
+  final LatLng initialPos;
+
+  OrderActive({required this.currentRoute,required this.initialPos});
+}
+

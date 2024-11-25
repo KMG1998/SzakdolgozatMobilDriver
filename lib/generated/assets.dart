@@ -9,9 +9,10 @@ class Assets {
   static const String driverDriverDashboardScreen = 'lib/pages/driver/driver_dashboard_screen.dart';
   static const String fontsJetBrainsMonoRomanRegular = 'lib/assets/fonts/JetBrainsMonoRomanRegular.ttf';
   static const String generatedAssets = 'lib/generated/assets.dart';
+  static const String imagesArrowDown = 'lib/assets/images/arrow_down.svg';
+  static const String imagesCarMarker = 'lib/assets/images/car_marker.png';
   static const String imagesImageNotFound = 'lib/assets/images/image_not_found.png';
   static const String imagesImgArrowDown = 'lib/assets/images/img_arrow_down.svg';
-  static const String imagesImgArrowDownBlack900 = 'lib/assets/images/img_arrow_down_black_900.svg';
   static const String imagesImgArrowUp = 'lib/assets/images/img_arrow_up.svg';
   static const String imagesImgClock = 'lib/assets/images/img_clock.svg';
   static const String imagesImgHome = 'lib/assets/images/img_home.svg';
@@ -20,7 +21,6 @@ class Assets {
   static const String imagesImgMagantaxiLogo1 = 'lib/assets/images/img_magantaxi_logo_1.png';
   static const String imagesImgResponseButtons = 'lib/assets/images/img_response_buttons.svg';
   static const String imagesImgVector = 'lib/assets/images/img_vector.svg';
-  static const String imagesNewRideButton = 'lib/assets/images/new_ride_button.png';
   static const String libMain = 'lib/main.dart';
   static const String loginLoginCubit = 'lib/qubit/login/login_cubit.dart';
   static const String loginLoginState = 'lib/qubit/login/login_state.dart';

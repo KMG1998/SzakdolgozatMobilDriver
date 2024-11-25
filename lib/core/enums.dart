@@ -1,4 +1,5 @@
 enum StreamDataType{
+  orderInit,
   geoData,
-  termination
+  termination,
 }

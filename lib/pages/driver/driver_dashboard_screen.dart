@@ -6,7 +6,10 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:logger/logger.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
 import 'package:szakdolgozat_mobil_driver_side/qubit/order/order_cubit.dart';
+import 'package:szakdolgozat_mobil_driver_side/services/streamService.dart';
+import 'package:szakdolgozat_mobil_driver_side/widgets/custom_outlined_button.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/custom_text_form_field.dart';
+import 'package:szakdolgozat_mobil_driver_side/widgets/map_widget.dart';
 
 class DriverDashboardScreen extends StatefulWidget {
   const DriverDashboardScreen({super.key});
@@ -41,9 +44,9 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
             ),
           ),
           child: BlocBuilder<OrderCubit, OrderState>(builder: (context, state) {
-            if (state.hasError) {
+            if (state is OrderWaiting && state.errorMessage != null) {
               Fluttertoast.showToast(
-                  msg: state.errorMessage ?? 'unknown error',
+                  msg: state.errorMessage ?? 'Ismeretlen hiba',
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM,
                   timeInSecForIosWeb: 1,
@@ -51,17 +54,56 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
                   textColor: Colors.white,
                   fontSize: 16.0);
             }
-            if (state.isLoading) {
-              return SizedBox(
-                width: 50,
-                height: 50,
-                child: LoadingIndicator(
-                  indicatorType: Indicator.ballClipRotatePulse,
-                  colors: [Colors.black],
+            if (state is OrderWaiting) {
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Jöhetnek a foglalások?',
+                      style: theme.textTheme.headlineLarge,
+                    ),
+                    SizedBox(height: 3.h),
+                    Switch(
+                        value: state.driverActive,
+                        activeTrackColor: Colors.white,
+                        inactiveTrackColor: Colors.white,
+                        inactiveThumbColor: Colors.red,
+                        activeColor: Colors.green,
+                        onChanged: (value) {
+                          if (value) {
+                            context.read<OrderCubit>().setDriverAvailable();
+                            return;
+                          }
+                          context.read<OrderCubit>().setDriverUnavailable();
+                        })
+                  ],
                 ),
               );
             }
-            if (state.currentOrder != null) {
+            if (state is OrderActive) {
+              return Column(
+                children: [
+                  MapWidget(initialPos: state.initialPos),
+                  CustomOutlinedButton(
+                    text: 'off',
+                    onPressed: () {
+                      _logger.d('clicked');
+                      context.read<OrderCubit>().setDriverUnavailable();
+                    },
+                  )
+                ],
+              );
+            }
+            return SizedBox(
+              width: 50,
+              height: 50,
+              child: LoadingIndicator(
+                indicatorType: Indicator.ballClipRotatePulse,
+                colors: [Colors.black],
+              ),
+            );
+            /*if (state.currentOrder != null) {
               return Container(
                 width: double.maxFinite,
                 padding: EdgeInsets.symmetric(vertical: 1.w),
@@ -85,22 +127,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
                   ],
                 ),
               );
-            }
-            return Center(
-              child: Column(
-                children: [
-                  Switch(
-                      value: state.driverAvailable,
-                      onChanged: (value) {
-                        if (value) {
-                          context.read<OrderCubit>().setDriverAvailable();
-                          return;
-                        }
-                        context.read<OrderCubit>().setDriverUnavailable();
-                      })
-                ],
-              ),
-            );
+            }*/
           }),
         ),
       ),
@@ -129,24 +156,6 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
             filled: false,
           ),
           SizedBox(height: 6.w),
-          Padding(
-            padding: EdgeInsets.only(left: 15.h),
-            child: Row(
-              children: [
-                Text(
-                  "utas neve:",
-                  style: theme.textTheme.titleLarge,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 12.h),
-                  child: Text(
-                    "Teszt Jani",
-                    style: theme.textTheme.titleLarge,
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
