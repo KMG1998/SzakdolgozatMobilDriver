@@ -5,7 +5,7 @@ import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
 import 'package:szakdolgozat_mobil_driver_side/main.dart';
 import 'package:szakdolgozat_mobil_driver_side/routes/app_routes.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/secureStorage.dart';
-import 'package:szakdolgozat_mobil_driver_side/services/streamService.dart';
+import 'package:szakdolgozat_mobil_driver_side/services/socket_service.dart';
 
 class OrderService {
   final _dio = Dio(BaseOptions(
@@ -50,7 +50,7 @@ class OrderService {
 
   Future<bool> setDriverUnavailable() async {
     final resp = await _dio.post('/setDriverUnavailable', data: {
-      'webSocketChannelId': getIt.get<StreamService>().getCurrentChannelId(),
+      'webSocketChannelId': getIt.get<StreamService>().getCurrentRoomId(),
     });
     return resp.statusCode == 200;
   }

@@ -1,5 +1,8 @@
 enum StreamDataType{
   orderInit,
-  geoData,
-  termination,
+  driverGeoData,
+  passengerCancel,
+  driverCancel,
+  joinRoom,
+  leaveRoom
 }

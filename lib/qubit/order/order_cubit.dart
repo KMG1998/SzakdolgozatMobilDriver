@@ -12,7 +12,7 @@ import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
 import 'package:szakdolgozat_mobil_driver_side/gen/assets.gen.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/Order.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/orderService.dart';
-import 'package:szakdolgozat_mobil_driver_side/services/streamService.dart';
+import 'package:szakdolgozat_mobil_driver_side/services/socket_service.dart';
 
 part 'order_state.dart';
 
@@ -31,22 +31,15 @@ class OrderCubit extends Cubit<OrderState> {
         return;
       }
       emit(OrderLoading());
-      getIt.get<StreamService>().getCurrentChannelId();
+      getIt.get<StreamService>().getCurrentRoomId();
       final streamChannelId = await getIt.get<OrderService>().setDriverAvailable();
       if (streamChannelId.isNotEmpty) {
-        getIt.get<StreamService>().connectToChannel(streamChannelId, (streamData, currentPos) {
-          final decodedData = jsonDecode(streamData.data);
-          final currentRoute = PolylinePoints().decodePolyline(decodedData[0]['overview_polyline']['points']);
-          emit(
-            OrderActive(
-                currentRoute: currentRoute,
-                initialPos: LatLng(
-                  currentPos.latitude,
-                  currentPos.longitude,
-                ),
-            ),
-          );
-        });
+        _logger.d('room id in this shit: $streamChannelId');
+        getIt.get<StreamService>().connectToRoom(
+              roomId: streamChannelId,
+              onOrderInit: _onOrderInit,
+              onPassengerCancel: _onOrderCancel,
+            );
         emit(OrderWaiting(driverActive: true));
         Fluttertoast.showToast(msg: 'Sikeres aktiválás');
         return;
@@ -63,7 +56,7 @@ class OrderCubit extends Cubit<OrderState> {
       emit(OrderLoading());
       final success = await getIt.get<OrderService>().setDriverUnavailable();
       if (success) {
-        getIt.get<StreamService>().disconnectSocket();
+        getIt.get<StreamService>().disconnectRoom();
         emit(OrderWaiting(driverActive: false));
         return;
       }
@@ -72,5 +65,28 @@ class OrderCubit extends Cubit<OrderState> {
       _logger.e(e);
       emit(OrderWaiting(driverActive: true, errorMessage: 'Sikertelen deaktiválás'));
     }
+  }
+
+  refuseOrder(){
+    getIt.get<StreamService>().disconnectRoom();
+    emit(OrderWaiting(driverActive: false));
+  }
+
+  _onOrderInit(streamData, currentPos) {
+    final decodedData = jsonDecode(streamData.data);
+    final currentRoute = PolylinePoints().decodePolyline(decodedData[0]['overview_polyline']['points']);
+    emit(
+      OrderActive(
+        currentRoute: currentRoute,
+        initialPos: LatLng(
+          currentPos.latitude,
+          currentPos.longitude,
+        ),
+      ),
+    );
+  }
+
+  _onOrderCancel() {
+    emit(OrderWaiting(driverActive: false, errorMessage: 'Az utas visszautasította'));
   }
 }

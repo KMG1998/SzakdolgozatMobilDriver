@@ -6,7 +6,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:logger/logger.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
 import 'package:szakdolgozat_mobil_driver_side/qubit/order/order_cubit.dart';
-import 'package:szakdolgozat_mobil_driver_side/services/streamService.dart';
+import 'package:szakdolgozat_mobil_driver_side/services/socket_service.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/custom_outlined_button.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/custom_text_form_field.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/map_widget.dart';
@@ -89,7 +89,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
                     text: 'off',
                     onPressed: () {
                       _logger.d('clicked');
-                      context.read<OrderCubit>().setDriverUnavailable();
+                      context.read<OrderCubit>().refuseOrder();
                     },
                   )
                 ],
