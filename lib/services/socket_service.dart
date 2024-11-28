@@ -2,13 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/enums.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/StreamData.dart';
 
-class StreamService {
+class SocketService {
   final StreamController<StreamData> _dataStream = StreamController();
   String _currentRoomId = '';
   final _socket = io('http://10.0.2.2:8085', <String, dynamic>{
@@ -16,11 +15,11 @@ class StreamService {
     'autoConnect': false
   });
 
-  final List<String> listenerNames = [StreamDataType.orderInit.name, StreamDataType.passengerCancel.name];
+  final List<String> listenerNames = [SocketDataType.orderInit.name, SocketDataType.passengerCancel.name];
 
   final _logger = Logger();
 
-  StreamService() {
+  SocketService() {
     _logger.d('create stream service');
     _socket.connect();
     _socket.onConnect((e) {
@@ -37,19 +36,24 @@ class StreamService {
 
   void connectToRoom({
     required String roomId,
+    required String token,
     required void Function(StreamData, Position) onOrderInit,
     required void Function() onPassengerCancel,
   }) {
     _currentRoomId = roomId;
-    _socket.emit(StreamDataType.joinRoom.name, _currentRoomId);
-    _socket.on(StreamDataType.passengerCancel.name, (data) {
+    _socket.io.options!['extraHeaders'] = {'token': token};
+    _logger.d(_socket.io.options!['extraHeaders']);
+    _socket.emit(SocketDataType.joinRoom.name, _currentRoomId);
+    _logger.d(_socket.io.options!['extraHeaders']);
+    _socket.on(SocketDataType.passengerCancel.name, (data) {
       try {
         onPassengerCancel();
+        disconnectRoom();
       } catch (e) {
         _logger.e(e);
       }
     });
-    _socket.on(StreamDataType.orderInit.name, (data) async {
+    _socket.on(SocketDataType.orderInit.name, (data) async {
       _logger.d(data);
       final streamData = StreamData.fromJson(jsonDecode(data));
       onOrderInit(streamData, await Geolocator.getCurrentPosition());
@@ -70,7 +74,7 @@ class StreamService {
 
   void disconnectRoom() {
     try {
-      _socket.off('dataTransfer');
+      _socket.emit(SocketDataType.leaveRoom.name, _currentRoomId);
       for (String listenerName in listenerNames) {
         _socket.off(listenerName);
       }

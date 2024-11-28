@@ -8,10 +8,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:szakdolgozat_mobil_driver_side/core/enums.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
 import 'package:szakdolgozat_mobil_driver_side/gen/assets.gen.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/Order.dart';
+import 'package:szakdolgozat_mobil_driver_side/models/StreamData.dart';
+import 'package:szakdolgozat_mobil_driver_side/models/order_init_data.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/orderService.dart';
+import 'package:szakdolgozat_mobil_driver_side/services/secureStorage.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/socket_service.dart';
 
 part 'order_state.dart';
@@ -31,12 +35,14 @@ class OrderCubit extends Cubit<OrderState> {
         return;
       }
       emit(OrderLoading());
-      getIt.get<StreamService>().getCurrentRoomId();
-      final streamChannelId = await getIt.get<OrderService>().setDriverAvailable();
-      if (streamChannelId.isNotEmpty) {
-        _logger.d('room id in this shit: $streamChannelId');
-        getIt.get<StreamService>().connectToRoom(
-              roomId: streamChannelId,
+      getIt.get<SocketService>().getCurrentRoomId();
+      final streamRoomId = await getIt.get<OrderService>().setDriverAvailable();
+      if (streamRoomId.isNotEmpty) {
+        final token = await getIt.get<SecureStorage>().getValue('token');
+        _logger.d('room id: $streamRoomId');
+        getIt.get<SocketService>().connectToRoom(
+              roomId: streamRoomId,
+              token: token!,
               onOrderInit: _onOrderInit,
               onPassengerCancel: _onOrderCancel,
             );
@@ -56,7 +62,7 @@ class OrderCubit extends Cubit<OrderState> {
       emit(OrderLoading());
       final success = await getIt.get<OrderService>().setDriverUnavailable();
       if (success) {
-        getIt.get<StreamService>().disconnectRoom();
+        getIt.get<SocketService>().disconnectRoom();
         emit(OrderWaiting(driverActive: false));
         return;
       }
@@ -67,17 +73,24 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-  refuseOrder(){
-    getIt.get<StreamService>().disconnectRoom();
+  refuseOrder() {
+    final socketService = getIt.get<SocketService>();
+    socketService.emitData(StreamData(dataType: SocketDataType.driverCancel, data: ''));
+    socketService.disconnectRoom();
     emit(OrderWaiting(driverActive: false));
   }
 
+  finishOrder(){
+    getIt.get<SocketService>().emitData(StreamData(dataType: SocketDataType.finishOrder, data: ''));
+  }
+
   _onOrderInit(streamData, currentPos) {
-    final decodedData = jsonDecode(streamData.data);
-    final currentRoute = PolylinePoints().decodePolyline(decodedData[0]['overview_polyline']['points']);
+    final decodedData = OrderInitData.fromJson(jsonDecode(streamData.data));
+    final currentRoute = PolylinePoints().decodePolyline(decodedData.routes.first.overviewPolyline!.points!);
     emit(
       OrderActive(
         currentRoute: currentRoute,
+        passengerPos: decodedData.passengerPos,
         initialPos: LatLng(
           currentPos.latitude,
           currentPos.longitude,

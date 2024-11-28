@@ -25,6 +25,7 @@ class Assets {
   static const String loginLoginCubit = 'lib/qubit/login/login_cubit.dart';
   static const String loginLoginState = 'lib/qubit/login/login_state.dart';
   static const String modelsOrder = 'lib/models/Order.dart';
+  static const String modelsOrderInitData = 'lib/models/order_init_data.dart';
   static const String modelsStreamData = 'lib/models/StreamData.dart';
   static const String modelsUser = 'lib/models/User.dart';
   static const String orderOrderCubit = 'lib/qubit/order/order_cubit.dart';
@@ -36,7 +37,7 @@ class Assets {
   static const String routesAppRoutes = 'lib/routes/app_routes.dart';
   static const String servicesOrderService = 'lib/services/orderService.dart';
   static const String servicesSecureStorage = 'lib/services/secureStorage.dart';
-  static const String servicesStreamService = 'lib/services/socket_service.dart';
+  static const String servicesSocketService = 'lib/services/socket_service.dart';
   static const String servicesUserService = 'lib/services/userService.dart';
   static const String servicesVehicleToUserService = 'lib/services/vehicleToUserService.dart';
   static const String themeAppDecoration = 'lib/theme/app_decoration.dart';

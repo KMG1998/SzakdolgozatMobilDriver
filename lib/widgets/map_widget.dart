@@ -54,9 +54,19 @@ class _MapWidgetState extends State<MapWidget> {
                         title: 'Ön',
                       )),
                   Marker(
+                      markerId: MarkerId('passenger'),
+                      position: LatLng(
+                        (state as OrderActive).passengerPos.latitude,
+                        (state).passengerPos.longitude,
+                      ),
+                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+                      infoWindow: InfoWindow(
+                        title: 'Utas',
+                      )),
+                  Marker(
                       markerId: MarkerId('destination'),
                       position: LatLng(
-                        (state as OrderActive).currentRoute.last.latitude,
+                        (state).currentRoute.last.latitude,
                         (state).currentRoute.last.longitude,
                       ),
                       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),

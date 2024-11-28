@@ -32,6 +32,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
         body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment(0.5, 0),
@@ -87,6 +88,13 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
                   MapWidget(initialPos: state.initialPos),
                   CustomOutlinedButton(
                     text: 'off',
+                    onPressed: () {
+                      _logger.d('clicked');
+                      context.read<OrderCubit>().refuseOrder();
+                    },
+                  ),
+                  CustomOutlinedButton(
+                    text: 'Fuvar lezárása',
                     onPressed: () {
                       _logger.d('clicked');
                       context.read<OrderCubit>().refuseOrder();

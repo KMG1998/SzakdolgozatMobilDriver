@@ -50,7 +50,7 @@ class OrderService {
 
   Future<bool> setDriverUnavailable() async {
     final resp = await _dio.post('/setDriverUnavailable', data: {
-      'webSocketChannelId': getIt.get<StreamService>().getCurrentRoomId(),
+      'webSocketChannelId': getIt.get<SocketService>().getCurrentRoomId(),
     });
     return resp.statusCode == 200;
   }

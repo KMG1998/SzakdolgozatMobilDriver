@@ -12,5 +12,5 @@ void initServiceLocator() {
   getIt.registerLazySingleton(() => UserService());
   getIt.registerLazySingleton(() => VehicleToUserService());
   getIt.registerLazySingleton(() => SecureStorage());
-  getIt.registerLazySingleton<StreamService>(() => StreamService());
+  getIt.registerLazySingleton<SocketService>(() => SocketService());
 }
