@@ -107,7 +107,7 @@ class CustomTextFormField extends StatelessWidget {
   );
   InputDecoration get decoration => InputDecoration(
     hintText: hintText ?? "",
-    hintStyle: hintStyle ?? theme.textTheme.titleLarge,
+    hintStyle: hintStyle ?? theme.textTheme.titleLarge!.copyWith(color: Colors.grey),
     prefixIcon: prefix,
     prefixIconConstraints: prefixConstraints,
     suffixIcon: suffix,
@@ -140,21 +140,5 @@ class CustomTextFormField extends StatelessWidget {
             width: 2,
           ),
         ),
-  );
-}
-
-extension TextFormFieldStyleHelper on CustomTextFormField {
-  static UnderlineInputBorder get underLineBlack => UnderlineInputBorder(
-    borderSide: BorderSide(
-      color: appTheme.black900,
-    ),
-  );
-  static OutlineInputBorder get outlineBlackTL20 => OutlineInputBorder(
-    borderRadius: BorderRadius.circular(20.h),
-    borderSide: BorderSide.none,
-  );
-  static OutlineInputBorder get fillPrimary => OutlineInputBorder(
-    borderRadius: BorderRadius.circular(20.h),
-    borderSide: BorderSide.none,
   );
 }

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
-import 'package:szakdolgozat_mobil_driver_side/models/User.dart';
+import 'package:szakdolgozat_mobil_driver_side/models/user.dart';
 
 part 'user_state.dart';
 

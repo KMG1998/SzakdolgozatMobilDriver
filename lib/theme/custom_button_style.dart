@@ -15,48 +15,28 @@ class CustomButtonStyles {
           borderRadius: BorderRadius.circular(14.h),
         ),
       );
-  static ButtonStyle get outlineBlackTL18 => OutlinedButton.styleFrom(
-        backgroundColor: theme.colorScheme.onSecondaryContainer,
-        side: BorderSide(
-          color: appTheme.black900,
-          width: 2,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18.h),
-        ),
-      );
-  static ButtonStyle get outlineBlackTL20 => OutlinedButton.styleFrom(
-        backgroundColor: theme.colorScheme.primary,
-        side: BorderSide(
-          color: appTheme.black900,
-          width: 3,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(
-              20.h,
-            ),
-          ),
-        ),
-      );
-  static ButtonStyle get outlineBlackTL202 => OutlinedButton.styleFrom(
-        backgroundColor: theme.colorScheme.onSecondaryContainer,
-        side: BorderSide(
-          color: appTheme.black900,
-          width: 2,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.h),
-        ),
-      );
-  static ButtonStyle get outlineBlack1 => OutlinedButton.styleFrom(
-        backgroundColor: theme.colorScheme.primary,
-        side: BorderSide(
-          color: appTheme.black900,
-          width: 3,
-        ),
-        shape: RoundedRectangleBorder(),
-      );
+  static ButtonStyle get outlineRed=> OutlinedButton.styleFrom(
+    backgroundColor: theme.colorScheme.onSecondaryContainer,
+    side: BorderSide(
+      color: Colors.redAccent,
+      width: 2,
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(14.h),
+    ),
+  );
+
+  static ButtonStyle get outlineGreen=> OutlinedButton.styleFrom(
+    backgroundColor: theme.colorScheme.onSecondaryContainer,
+    side: BorderSide(
+      color: Colors.green,
+      width: 2,
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(14.h),
+    ),
+  );
+
   // text button style
   static ButtonStyle get none => ButtonStyle(
         backgroundColor: WidgetStateProperty.all<Color>(Colors.transparent),

@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/enums.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
-import 'package:szakdolgozat_mobil_driver_side/models/StreamData.dart';
+import 'package:szakdolgozat_mobil_driver_side/models/stream_data.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/secureStorage.dart';
 
 class SocketService {
@@ -60,10 +60,11 @@ class SocketService {
     return _dataStream.stream;
   }
 
-  void emitData(SocketDataType emitType,StreamData data) async {
+  Future<void> emitData(SocketDataType emitType,StreamData streamData) async {
     final roomId = await getIt.get<SecureStorage>().getValue('roomId');
     final token = await getIt.get<SecureStorage>().getValue('token');
-    _socket.emit(emitType.name, jsonEncode({'token': token, 'roomId': roomId, 'streamData': data.data}));
+    _logger.e('emitted ${emitType.name.toString()}');
+    _socket.emit(emitType.name, jsonEncode({'userToken': token, 'roomId': roomId, 'data': streamData.data}));
   }
 
   void disconnectRoom() async {

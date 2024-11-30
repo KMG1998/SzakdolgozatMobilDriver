@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
-import 'package:szakdolgozat_mobil_driver_side/models/User.dart';
+import 'package:szakdolgozat_mobil_driver_side/models/user.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/secureStorage.dart';
 
 import '../core/utils/service_locator.dart';

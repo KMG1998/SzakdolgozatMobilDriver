@@ -85,19 +85,32 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
             if (state is OrderActive) {
               return Column(
                 children: [
+                  Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      color: Colors.white,
+                      child: Text(
+                        'Utas értékelés átlaga: ${state.passengerReviewAVG?.toStringAsFixed(2) ?? 'nincs'}',
+                        style: theme.textTheme.titleLarge,
+                        textAlign: TextAlign.center,
+                      )),
+                  SizedBox(height: 20),
                   MapWidget(initialPos: state.initialPos),
+                  SizedBox(height: 20),
                   CustomOutlinedButton(
-                    text: 'off',
+                    text: 'Elutasít',
+                    buttonStyle: CustomButtonStyles.outlineRed,
                     onPressed: () {
                       _logger.d('clicked');
                       context.read<OrderCubit>().refuseOrder();
                     },
                   ),
+                  SizedBox(height: 20),
                   CustomOutlinedButton(
                     text: 'Fuvar lezárása',
+                    buttonStyle: CustomButtonStyles.outlineGreen,
                     onPressed: () {
-                      _logger.d('clicked');
-                      context.read<OrderCubit>().refuseOrder();
+                      context.read<OrderCubit>().finishOrder();
                     },
                   )
                 ],
@@ -111,60 +124,8 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
                 colors: [Colors.black],
               ),
             );
-            /*if (state.currentOrder != null) {
-              return Container(
-                width: double.maxFinite,
-                padding: EdgeInsets.symmetric(vertical: 1.w),
-                child: Column(
-                  children: [
-                    SizedBox(height: 23.w),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Container(
-                          margin: EdgeInsets.only(bottom: 5.w),
-                          padding: EdgeInsets.symmetric(horizontal: 53.h),
-                          child: Column(
-                            children: [
-                              _buildDataSection(context),
-                              SizedBox(height: 22.w),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }*/
           }),
         ),
-      ),
-    );
-  }
-
-  /// Section Widget
-  Widget _buildDataSection(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(right: 1.h),
-      padding: EdgeInsets.symmetric(vertical: 12.w),
-      decoration: AppDecoration.fillPrimary.copyWith(
-        borderRadius: BorderRadiusStyle.roundedBorder20,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: 2.w),
-          CustomTextFormField(
-            hintText: "Jelenlegi foglalás",
-            textInputAction: TextInputAction.done,
-            contentPadding: EdgeInsets.symmetric(horizontal: 15.h),
-            borderDecoration: TextFormFieldStyleHelper.underLineBlack,
-            filled: false,
-          ),
-          SizedBox(height: 6.w),
-        ],
       ),
     );
   }

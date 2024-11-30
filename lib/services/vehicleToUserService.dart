@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:szakdolgozat_mobil_driver_side/models/User.dart';
+import 'package:szakdolgozat_mobil_driver_side/models/user.dart';
 
 class VehicleToUserService {
   final dio = Dio(BaseOptions(

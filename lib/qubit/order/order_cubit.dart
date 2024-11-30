@@ -9,9 +9,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/enums.dart';
+import 'package:szakdolgozat_mobil_driver_side/core/popups/order_review_dialog.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
-import 'package:szakdolgozat_mobil_driver_side/models/StreamData.dart';
+import 'package:szakdolgozat_mobil_driver_side/main.dart';
+import 'package:szakdolgozat_mobil_driver_side/models/stream_data.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/order_init_data.dart';
+import 'package:szakdolgozat_mobil_driver_side/models/review.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/orderService.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/secureStorage.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/socket_service.dart';
@@ -69,15 +72,20 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-  refuseOrder() {
+  refuseOrder() async {
     final socketService = getIt.get<SocketService>();
-    socketService.emitData(SocketDataType.driverCancel,StreamData(data: ''));
+    await socketService.emitData(SocketDataType.driverCancel,StreamData(data: ''));
     socketService.disconnectRoom();
     emit(OrderWaiting(driverActive: false));
   }
 
-  finishOrder(){
-    getIt.get<SocketService>().emitData(SocketDataType.finishOrder,StreamData(data: ''));
+  finishOrder() async {
+    Review? orderReview;
+    await showDialog(context: navigatorKey.currentContext!, barrierDismissible: false,builder: (ctx) => OrderReviewDialog()).then((value) {
+      orderReview = value;
+    });
+    await getIt.get<SocketService>().emitData(SocketDataType.finishOrder,StreamData(data: jsonEncode(orderReview)));
+    emit(OrderWaiting(driverActive: false));
   }
 
   _onOrderInit(streamData, currentPos) {
@@ -87,6 +95,7 @@ class OrderCubit extends Cubit<OrderState> {
       OrderActive(
         currentRoute: currentRoute,
         passengerPos: decodedData.passengerPos,
+        passengerReviewAVG: decodedData.passengerReviewAVG,
         initialPos: LatLng(
           currentPos.latitude,
           currentPos.longitude,

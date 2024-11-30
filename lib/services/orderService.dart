@@ -41,6 +41,7 @@ class OrderService {
 
   Future<String> setDriverAvailable() async {
     final currentPos = await Geolocator.getCurrentPosition();
+    _logger.e('set available');
     final resp = await _dio.post('/setDriverAvailable', data: {
       'driverLat': currentPos.latitude,
       'driverLongit': currentPos.longitude,
