@@ -10,8 +10,6 @@ import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/enums.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
-import 'package:szakdolgozat_mobil_driver_side/gen/assets.gen.dart';
-import 'package:szakdolgozat_mobil_driver_side/models/Order.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/StreamData.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/order_init_data.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/orderService.dart';
@@ -35,14 +33,12 @@ class OrderCubit extends Cubit<OrderState> {
         return;
       }
       emit(OrderLoading());
-      getIt.get<SocketService>().getCurrentRoomId();
       final streamRoomId = await getIt.get<OrderService>().setDriverAvailable();
       if (streamRoomId.isNotEmpty) {
-        final token = await getIt.get<SecureStorage>().getValue('token');
         _logger.d('room id: $streamRoomId');
+        await getIt.get<SecureStorage>().setValue('roomId', streamRoomId);
         getIt.get<SocketService>().connectToRoom(
               roomId: streamRoomId,
-              token: token!,
               onOrderInit: _onOrderInit,
               onPassengerCancel: _onOrderCancel,
             );
@@ -75,13 +71,13 @@ class OrderCubit extends Cubit<OrderState> {
 
   refuseOrder() {
     final socketService = getIt.get<SocketService>();
-    socketService.emitData(StreamData(dataType: SocketDataType.driverCancel, data: ''));
+    socketService.emitData(SocketDataType.driverCancel,StreamData(data: ''));
     socketService.disconnectRoom();
     emit(OrderWaiting(driverActive: false));
   }
 
   finishOrder(){
-    getIt.get<SocketService>().emitData(StreamData(dataType: SocketDataType.finishOrder, data: ''));
+    getIt.get<SocketService>().emitData(SocketDataType.finishOrder,StreamData(data: ''));
   }
 
   _onOrderInit(streamData, currentPos) {

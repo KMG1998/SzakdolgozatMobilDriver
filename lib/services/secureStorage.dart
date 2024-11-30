@@ -16,4 +16,8 @@ class SecureStorage {
   Future<void> setValue(String key, String value) async {
     await _storage.write(key: key, value: value, aOptions: _androidOptions);
   }
+
+  Future<void> deleteValue(String key) async{
+    await _storage.delete(key: key);
+  }
 }

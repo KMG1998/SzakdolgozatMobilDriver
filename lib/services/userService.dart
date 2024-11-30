@@ -49,9 +49,7 @@ class UserService {
       },
     );
     final token = resp.headers['set-cookie']![0].split(';')[0].split('=')[1];
+    _logger.d(token);
     await getIt.get<SecureStorage>().setValue('token', token);
-    _logger.d(resp.data);
-    final currentUser = User.fromJson(resp.data);
-    await getIt.get<SecureStorage>().setValue('userData', jsonEncode(currentUser));
   }
 }
