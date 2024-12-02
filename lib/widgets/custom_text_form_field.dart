@@ -28,7 +28,7 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.autoCorrect = true,
     this.enableSuggestions = true,
-    this.autovalidateMode,
+    this.autoValidateMode = AutovalidateMode.onUserInteraction,
   });
 
   final double? width;
@@ -77,8 +77,7 @@ class CustomTextFormField extends StatelessWidget {
 
   final bool? enableSuggestions;
 
-  final AutovalidateMode? autovalidateMode;
-
+  final AutovalidateMode? autoValidateMode;
 
   @override
   Widget build(BuildContext context) {
@@ -86,59 +85,59 @@ class CustomTextFormField extends StatelessWidget {
   }
 
   Widget textFormFieldWidget(BuildContext context) => SizedBox(
-    width: width ?? double.maxFinite,
-    child: TextFormField(
-      scrollPadding:
-      EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      controller: controller,
-      focusNode: focusNode ?? FocusNode(),
-      autofocus: autofocus!,
-      style: textStyle ?? theme.textTheme.titleMedium,
-      obscureText: obscureText!,
-      textInputAction: textInputAction,
-      keyboardType: textInputType,
-      maxLines: maxLines ?? 1,
-      decoration: decoration,
-      validator: validator,
-      autocorrect: autoCorrect!,
-      enableSuggestions: enableSuggestions!,
-      autovalidateMode: autovalidateMode,
-    ),
-  );
+        width: width ?? double.maxFinite,
+        child: TextFormField(
+          scrollPadding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          controller: controller,
+          focusNode: focusNode ?? FocusNode(),
+          autofocus: autofocus!,
+          style: textStyle ?? theme.textTheme.titleMedium,
+          obscureText: obscureText!,
+          textInputAction: textInputAction,
+          keyboardType: textInputType,
+          maxLines: maxLines ?? 1,
+          decoration: decoration,
+          validator: validator,
+          autocorrect: autoCorrect!,
+          enableSuggestions: enableSuggestions!,
+          autovalidateMode: autoValidateMode,
+        ),
+      );
+
   InputDecoration get decoration => InputDecoration(
-    hintText: hintText ?? "",
-    hintStyle: hintStyle ?? theme.textTheme.titleLarge!.copyWith(color: Colors.grey),
-    prefixIcon: prefix,
-    prefixIconConstraints: prefixConstraints,
-    suffixIcon: suffix,
-    suffixIconConstraints: suffixConstraints,
-    isDense: true,
-    contentPadding: contentPadding ?? EdgeInsets.symmetric(vertical:5.h, horizontal: 20.w),
-    fillColor: fillColor ?? theme.colorScheme.onSecondaryContainer,
-    filled: filled,
-    border: borderDecoration ??
-        OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.h),
-          borderSide: BorderSide(
-            color: appTheme.black900,
-            width: 2,
-          ),
-        ),
-    enabledBorder: borderDecoration ??
-        OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.h),
-          borderSide: BorderSide(
-            color: appTheme.black900,
-            width: 2,
-          ),
-        ),
-    focusedBorder: borderDecoration ??
-        OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.h),
-          borderSide: BorderSide(
-            color: appTheme.black900,
-            width: 2,
-          ),
-        ),
-  );
+        hintText: hintText ?? "",
+        hintStyle: hintStyle ?? theme.textTheme.titleLarge,
+        prefixIcon: prefix,
+        prefixIconConstraints: prefixConstraints,
+        suffixIcon: suffix,
+        suffixIconConstraints: suffixConstraints,
+        isDense: true,
+        contentPadding: contentPadding ?? EdgeInsets.symmetric(vertical: 5.h, horizontal: 20.w),
+        fillColor: fillColor ?? theme.colorScheme.onSecondaryContainer,
+        filled: filled,
+        border: borderDecoration ??
+            OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.h),
+              borderSide: BorderSide(
+                color: appTheme.black,
+                width: 2,
+              ),
+            ),
+        enabledBorder: borderDecoration ??
+            OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.h),
+              borderSide: BorderSide(
+                color: appTheme.black,
+                width: 2,
+              ),
+            ),
+        focusedBorder: borderDecoration ??
+            OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.h),
+              borderSide: BorderSide(
+                color: appTheme.black,
+                width: 2,
+              ),
+            ),
+      );
 }

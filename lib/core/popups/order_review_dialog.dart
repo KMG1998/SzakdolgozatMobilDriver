@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:szakdolgozat_mobil_driver_side/models/review.dart';
+import 'package:szakdolgozat_mobil_driver_side/models/order_review.dart';
 import 'package:szakdolgozat_mobil_driver_side/qubit/order/order_cubit.dart';
 import 'package:szakdolgozat_mobil_driver_side/theme/app_decoration.dart';
 import 'package:szakdolgozat_mobil_driver_side/theme/theme_helper.dart';
@@ -91,7 +91,7 @@ class _OrderReviewDialogState extends State<OrderReviewDialog> {
                       onPressed: () => {
                         Navigator.pop(
                             context,
-                            Review(
+                            OrderReview(
                               score: reviewScore,
                               reviewText: reviewTextController.text,
                             ))

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
+import 'package:szakdolgozat_mobil_driver_side/theme/theme_helper.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/base_button.dart';
 
 class CustomOutlinedButton extends BaseButton {
@@ -32,32 +32,32 @@ class CustomOutlinedButton extends BaseButton {
   Widget build(BuildContext context) {
     return alignment != null
         ? Align(
-            alignment: alignment ?? Alignment.center,
-            child: buildOutlinedButtonWidget,
-          )
+      alignment: alignment ?? Alignment.center,
+      child: buildOutlinedButtonWidget,
+    )
         : buildOutlinedButtonWidget;
   }
 
   Widget get buildOutlinedButtonWidget => Container(
-        height: height ?? 60.h,
-        width: width ?? double.maxFinite,
-        margin: margin,
-        decoration: decoration,
-        child: OutlinedButton(
-          style: buttonStyle,
-          onPressed: isDisabled ?? false ? null : onPressed ?? () {},
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              leftIcon ?? const SizedBox.shrink(),
-              Text(
-                text,
-                style: buttonTextStyle ?? theme.textTheme.titleLarge,
-              ),
-              rightIcon ?? const SizedBox.shrink(),
-            ],
+    height: height ?? 60.h,
+    width: width ?? double.maxFinite,
+    margin: margin,
+    decoration: decoration,
+    child: OutlinedButton(
+      style: buttonStyle,
+      onPressed: isDisabled ?? false ? null : onPressed ?? () {},
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          leftIcon ?? const SizedBox.shrink(),
+          Text(
+            text,
+            style: buttonTextStyle ?? theme.textTheme.titleLarge,
           ),
-        ),
-      );
+          rightIcon ?? const SizedBox.shrink(),
+        ],
+      ),
+    ),
+  );
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -12,11 +13,10 @@ import 'package:szakdolgozat_mobil_driver_side/core/enums.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/popups/order_review_dialog.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
 import 'package:szakdolgozat_mobil_driver_side/main.dart';
+import 'package:szakdolgozat_mobil_driver_side/models/order_review.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/stream_data.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/order_init_data.dart';
-import 'package:szakdolgozat_mobil_driver_side/models/review.dart';
-import 'package:szakdolgozat_mobil_driver_side/services/orderService.dart';
-import 'package:szakdolgozat_mobil_driver_side/services/secureStorage.dart';
+import 'package:szakdolgozat_mobil_driver_side/services/order_service.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/socket_service.dart';
 
 part 'order_state.dart';
@@ -39,7 +39,7 @@ class OrderCubit extends Cubit<OrderState> {
       final streamRoomId = await getIt.get<OrderService>().setDriverAvailable();
       if (streamRoomId.isNotEmpty) {
         _logger.d('room id: $streamRoomId');
-        await getIt.get<SecureStorage>().setValue('roomId', streamRoomId);
+        await getIt.get<FlutterSecureStorage>().write(key: 'roomId', value:streamRoomId);
         getIt.get<SocketService>().connectToRoom(
               roomId: streamRoomId,
               onOrderInit: _onOrderInit,
@@ -80,7 +80,7 @@ class OrderCubit extends Cubit<OrderState> {
   }
 
   finishOrder() async {
-    Review? orderReview;
+    OrderReview? orderReview;
     await showDialog(context: navigatorKey.currentContext!, barrierDismissible: false,builder: (ctx) => OrderReviewDialog()).then((value) {
       orderReview = value;
     });

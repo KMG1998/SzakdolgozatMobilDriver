@@ -2,18 +2,24 @@ part of 'user_cubit.dart';
 
 @immutable
 class UserState {
-  final User? userData;
-  final Position? currentPos;
+  const UserState._();
+}
 
-  const UserState({
-    required this.userData,
-    required this.currentPos,
-  });
+class UserInit extends UserState{
+  const UserInit() : super._();
+}
 
-  UserState copyWith({userData, currentPos}) {
-    return UserState(
-      userData: userData,
-      currentPos: currentPos,
-    );
-  }
+class UserLoading extends UserState{
+  const UserLoading() : super._();
+}
+
+class UserLoaded extends UserState{
+  final User userData;
+  final Vehicle? vehicleData;
+  const UserLoaded({required this.userData,this.vehicleData}) : super._();
+}
+
+class UserError extends UserState{
+  final String errorMessage;
+  const UserError({required this.errorMessage}) : super._();
 }

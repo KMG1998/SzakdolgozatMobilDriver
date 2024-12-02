@@ -4,12 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:logger/logger.dart';
-import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
 import 'package:szakdolgozat_mobil_driver_side/qubit/order/order_cubit.dart';
-import 'package:szakdolgozat_mobil_driver_side/services/socket_service.dart';
+import 'package:szakdolgozat_mobil_driver_side/theme/theme_helper.dart';
+import 'package:szakdolgozat_mobil_driver_side/widgets/custom_nav_bar.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/custom_outlined_button.dart';
-import 'package:szakdolgozat_mobil_driver_side/widgets/custom_text_form_field.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/map_widget.dart';
+
+import '../../theme/custom_button_style.dart';
 
 class DriverDashboardScreen extends StatefulWidget {
   const DriverDashboardScreen({super.key});
@@ -126,6 +127,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
             );
           }),
         ),
+        bottomNavigationBar: CustomNavBar(activeNum: 1),
       ),
     );
   }

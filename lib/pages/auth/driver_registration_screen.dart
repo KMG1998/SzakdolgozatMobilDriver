@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
+import 'package:szakdolgozat_mobil_driver_side/theme/app_decoration.dart';
+import 'package:szakdolgozat_mobil_driver_side/theme/theme_helper.dart';
 
 class DriverRegistrationScreen extends StatelessWidget {
   const DriverRegistrationScreen({super.key});
@@ -37,7 +38,7 @@ class DriverRegistrationScreen extends StatelessWidget {
                       right: 53.h,
                       bottom: 383.w,
                     ),
-                    decoration: AppDecoration.outlineBlack9007.copyWith(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadiusStyle.roundedBorder20,
                     ),
                     padding: EdgeInsets.symmetric(horizontal: 20),

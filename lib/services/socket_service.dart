@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:logger/logger.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/enums.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/stream_data.dart';
-import 'package:szakdolgozat_mobil_driver_side/services/secureStorage.dart';
 
 class SocketService {
   final StreamController<StreamData> _dataStream = StreamController();
@@ -61,20 +61,20 @@ class SocketService {
   }
 
   Future<void> emitData(SocketDataType emitType,StreamData streamData) async {
-    final roomId = await getIt.get<SecureStorage>().getValue('roomId');
-    final token = await getIt.get<SecureStorage>().getValue('token');
+    final roomId = await getIt.get<FlutterSecureStorage>().read(key:'roomId');
+    final token = await getIt.get<FlutterSecureStorage>().read(key: 'token');
     _logger.e('emitted ${emitType.name.toString()}');
     _socket.emit(emitType.name, jsonEncode({'userToken': token, 'roomId': roomId, 'data': streamData.data}));
   }
 
   void disconnectRoom() async {
     try {
-      final roomId = await getIt.get<SecureStorage>().getValue('roomId');
+      final roomId = await getIt.get<FlutterSecureStorage>().read(key:'roomId');
       _socket.emit(SocketDataType.leaveRoom.name, roomId);
       for (String listenerName in listenerNames) {
         _socket.off(listenerName);
       }
-      getIt.get<SecureStorage>().deleteValue('roomId');
+      getIt.get<FlutterSecureStorage>().delete(key:'roomId');
     } catch (e) {
       _logger.e('disconnect error $e');
     }

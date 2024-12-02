@@ -1,20 +1,20 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:szakdolgozat_mobil_driver_side/core/app_export.dart';
 import 'package:flutter/material.dart';
+import 'package:szakdolgozat_mobil_driver_side/theme/theme_helper.dart';
 
 /// A class that offers pre-defined button styles for customizing button appearance.
 class CustomButtonStyles {
   // Outline button style
   static ButtonStyle get outlineBlack => OutlinedButton.styleFrom(
-        backgroundColor: theme.colorScheme.onSecondaryContainer,
-        side: BorderSide(
-          color: appTheme.black900,
-          width: 2,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14.h),
-        ),
-      );
+    backgroundColor: theme.colorScheme.onSecondaryContainer,
+    side: BorderSide(
+      color: appTheme.black,
+      width: 2,
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20.h),
+    ),
+  );
   static ButtonStyle get outlineRed=> OutlinedButton.styleFrom(
     backgroundColor: theme.colorScheme.onSecondaryContainer,
     side: BorderSide(
@@ -22,7 +22,7 @@ class CustomButtonStyles {
       width: 2,
     ),
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(14.h),
+      borderRadius: BorderRadius.circular(20.h),
     ),
   );
 
@@ -33,13 +33,13 @@ class CustomButtonStyles {
       width: 2,
     ),
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(14.h),
+      borderRadius: BorderRadius.circular(20.h),
     ),
   );
 
   // text button style
   static ButtonStyle get none => ButtonStyle(
-        backgroundColor: WidgetStateProperty.all<Color>(Colors.transparent),
-        elevation: WidgetStateProperty.all<double>(0),
-      );
+    backgroundColor: WidgetStateProperty.all<Color>(Colors.transparent),
+    elevation: WidgetStateProperty.all<double>(0),
+  );
 }
