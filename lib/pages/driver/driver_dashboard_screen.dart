@@ -20,8 +20,9 @@ class DriverDashboardScreen extends StatefulWidget {
 }
 
 class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
   final _logger = Logger();
+
+  bool passengerEntered = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +47,9 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
             ),
           ),
           child: BlocBuilder<OrderCubit, OrderState>(builder: (context, state) {
+            if(state is OrderInit){
+              context.read<OrderCubit>().initState();
+            }
             if (state is OrderWaiting && state.errorMessage != null) {
               Fluttertoast.showToast(
                   msg: state.errorMessage ?? 'Ismeretlen hiba',
@@ -98,22 +102,40 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
                   SizedBox(height: 20),
                   MapWidget(initialPos: state.initialPos),
                   SizedBox(height: 20),
-                  CustomOutlinedButton(
-                    text: 'Elutasít',
-                    buttonStyle: CustomButtonStyles.outlineRed,
-                    onPressed: () {
-                      _logger.d('clicked');
-                      context.read<OrderCubit>().refuseOrder();
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  CustomOutlinedButton(
-                    text: 'Fuvar lezárása',
-                    buttonStyle: CustomButtonStyles.outlineGreen,
-                    onPressed: () {
-                      context.read<OrderCubit>().finishOrder();
-                    },
-                  )
+                  state.passengerPickedUp
+                      ? CustomOutlinedButton(
+                          text: 'Fuvar lezárása',
+                          buttonStyle: CustomButtonStyles.outlineGreen,
+                          onPressed: () {
+                            context.read<OrderCubit>().finishOrder();
+                          },
+                        )
+                      : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CustomOutlinedButton(
+                              text: 'Elutasít',
+                              buttonStyle: CustomButtonStyles.outlineRed,
+                              onPressed: () {
+                                context.read<OrderCubit>().refuseOrder();
+                                setState(() {
+                                  passengerEntered = false;
+                                });
+                              },
+                            ),
+                            SizedBox(height: 20,),
+                            CustomOutlinedButton(
+                              text: 'Utas beszállt',
+                              buttonStyle: CustomButtonStyles.outlineGreen,
+                              onPressed: () {
+                                context.read<OrderCubit>().pickUpPassenger();
+                                setState(() {
+                                  passengerEntered = true;
+                                });
+                              },
+                            ),
+                          ],
+                        )
                 ],
               );
             }

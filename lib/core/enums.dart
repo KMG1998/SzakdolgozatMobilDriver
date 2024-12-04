@@ -4,6 +4,7 @@ enum SocketDataType{
   driverGeoData,
   passengerCancel,
   driverCancel,
+  pickUpPassenger,
   joinRoom,
   leaveRoom,
 }

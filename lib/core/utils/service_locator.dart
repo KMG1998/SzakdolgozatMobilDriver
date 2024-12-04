@@ -9,12 +9,12 @@ import 'package:szakdolgozat_mobil_driver_side/services/vehicle_service.dart';
 final getIt = GetIt.instance;
 
 void initServiceLocator() {
-  getIt.registerLazySingleton(() => OrderService());
-  getIt.registerLazySingleton(() => UserService());
-  getIt.registerLazySingleton(() => VehicleService());
+  getIt.registerLazySingleton<OrderService>(() => OrderService());
+  getIt.registerLazySingleton<UserService>(() => UserService());
+  getIt.registerLazySingleton<VehicleService>(() => VehicleService());
   getIt.registerLazySingleton<SocketService>(() => SocketService());
   getIt.registerLazySingleton<ReviewService>(() => ReviewService());
-  getIt.registerLazySingleton(
+  getIt.registerLazySingleton<FlutterSecureStorage>(
         () => FlutterSecureStorage(
       aOptions: AndroidOptions(
         encryptedSharedPreferences: true,

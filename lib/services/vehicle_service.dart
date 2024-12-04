@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
+import 'package:szakdolgozat_mobil_driver_side/main.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/user.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/vehicle.dart';
+import 'package:szakdolgozat_mobil_driver_side/routes/app_routes.dart';
 
 class VehicleService {
   final _dio = Dio(
@@ -24,6 +26,14 @@ class VehicleService {
         .add(InterceptorsWrapper(onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
       options.headers['cookie'] = 'token=${await getIt.get<FlutterSecureStorage>().read(key: 'token')};';
       handler.next(options);
+    }));
+    _dio.interceptors
+        .add(InterceptorsWrapper(onResponse: (Response response, ResponseInterceptorHandler handler) {
+      if (response.statusCode == 401) {
+        navigatorKey.currentState?.pushNamed(AppRoutes.loginScreen);
+        return;
+      }
+      handler.next(response);
     }));
   }
 

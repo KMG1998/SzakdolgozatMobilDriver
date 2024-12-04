@@ -32,21 +32,23 @@ class OrderService {
       handler.next(options);
     }));
     _dio.interceptors
-        .add(InterceptorsWrapper(onResponse: (Response response, ResponseInterceptorHandler handler) async {
+        .add(InterceptorsWrapper(onResponse: (Response response, ResponseInterceptorHandler handler) {
       if (response.statusCode == 401) {
-        navigatorKey.currentState?.pushNamed(AppRoutes.driverRegistrationScreen);
+        navigatorKey.currentState?.pushNamed(AppRoutes.loginScreen);
+        return;
       }
       handler.next(response);
     }));
   }
 
   Future<String> setDriverAvailable() async {
+    _logger.d('sent available request');
     final currentPos = await Geolocator.getCurrentPosition();
-    _logger.e('set available');
     final resp = await _dio.post('/setDriverAvailable', data: {
       'driverLat': currentPos.latitude,
       'driverLongit': currentPos.longitude,
     });
+    _logger.d('received available response');
     return resp.data as String;
   }
 

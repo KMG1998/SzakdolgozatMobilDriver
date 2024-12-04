@@ -10,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/enums.dart';
+import 'package:szakdolgozat_mobil_driver_side/core/popups/background_location_permission_dialog.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/popups/order_review_dialog.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
 import 'package:szakdolgozat_mobil_driver_side/main.dart';
@@ -22,24 +23,58 @@ import 'package:szakdolgozat_mobil_driver_side/services/socket_service.dart';
 part 'order_state.dart';
 
 class OrderCubit extends Cubit<OrderState> {
-  OrderCubit() : super(OrderWaiting(driverActive: false));
+  OrderCubit() : super(OrderInit());
   final _logger = Logger();
 
-  setDriverAvailable() async {
+  initState() async {
+    emit(OrderLoading());
+    final secureStorage = getIt.get<FlutterSecureStorage>();
+    final roomId = await secureStorage.read(key: 'roomId');
+    if (roomId == null) {
+      emit(OrderWaiting(driverActive: false));
+      return;
+    }
+    final socketService = getIt.get<SocketService>();
+    socketService.connectToRoom(
+      roomId: roomId,
+      onOrderInit: _onOrderInit,
+      onPassengerCancel: _onOrderCancel,
+    );
+    final orderDataString = await secureStorage.read(key: 'orderData');
+    if (orderDataString == null) {
+      emit(OrderWaiting(driverActive: true));
+      return;
+    }
+    final orderData = OrderInitData.fromJson(jsonDecode(orderDataString));
+    final currentRoute = PolylinePoints().decodePolyline(orderData.routes.first.overviewPolyline!.points!);
+    final currentPos = await Geolocator.getCurrentPosition();
+    emit(
+      OrderActive(
+        currentRoute: currentRoute,
+        passengerPos: orderData.passengerPos,
+        passengerReviewAVG: orderData.passengerReviewAVG,
+        passengerPickedUp: false,
+        initialPos: LatLng(
+          currentPos.latitude,
+          currentPos.longitude,
+        ),
+      ),
+    );
+    return;
+  }
+
+  void setDriverAvailable() async {
     try {
-      const permission = Permission.location;
-      while (await permission.isDenied) {
-        await permission.request();
-      }
-      if (!await Geolocator.isLocationServiceEnabled() || await permission.isDenied) {
-        emit(OrderWaiting(driverActive: false, errorMessage: 'Kérjük, engedélyezze és kapcsolja be a GPS-t!'));
+      final permissionsGranted = await _checkPermissions();
+      if (!await Geolocator.isLocationServiceEnabled() || !permissionsGranted) {
+        emit(OrderWaiting(
+            driverActive: false, errorMessage: 'Kérjük, engedélyezze a kért erőforrásokat és kapcsolja be a GPS-t!'));
         return;
       }
       emit(OrderLoading());
       final streamRoomId = await getIt.get<OrderService>().setDriverAvailable();
       if (streamRoomId.isNotEmpty) {
-        _logger.d('room id: $streamRoomId');
-        await getIt.get<FlutterSecureStorage>().write(key: 'roomId', value:streamRoomId);
+        await getIt.get<FlutterSecureStorage>().write(key: 'roomId', value: streamRoomId);
         getIt.get<SocketService>().connectToRoom(
               roomId: streamRoomId,
               onOrderInit: _onOrderInit,
@@ -56,11 +91,12 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-  setDriverUnavailable() async {
+  void setDriverUnavailable() async {
     try {
       emit(OrderLoading());
       final success = await getIt.get<OrderService>().setDriverUnavailable();
       if (success) {
+        await getIt.get<FlutterSecureStorage>().delete(key: 'roomId');
         getIt.get<SocketService>().disconnectRoom();
         emit(OrderWaiting(driverActive: false));
         return;
@@ -72,23 +108,36 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-  refuseOrder() async {
+  void refuseOrder() async {
     final socketService = getIt.get<SocketService>();
-    await socketService.emitData(SocketDataType.driverCancel,StreamData(data: ''));
+    await socketService.emitData(SocketDataType.driverCancel, '');
     socketService.disconnectRoom();
+    socketService.stopBackgroundService();
     emit(OrderWaiting(driverActive: false));
   }
 
-  finishOrder() async {
+  void pickUpPassenger() async {
+    await getIt.get<SocketService>().emitData(SocketDataType.pickUpPassenger, '');
+    emit((state as OrderActive).copyWith(passengerPickedUp: true));
+  }
+
+  void finishOrder() async {
     OrderReview? orderReview;
-    await showDialog(context: navigatorKey.currentContext!, barrierDismissible: false,builder: (ctx) => OrderReviewDialog()).then((value) {
+    await showDialog(
+        context: navigatorKey.currentContext!,
+        barrierDismissible: false,
+        builder: (ctx) => OrderReviewDialog()).then((value) {
       orderReview = value;
     });
-    await getIt.get<SocketService>().emitData(SocketDataType.finishOrder,StreamData(data: jsonEncode(orderReview)));
+    final socketService = getIt.get<SocketService>();
+    await socketService.emitData(SocketDataType.finishOrder, jsonEncode(orderReview));
+    socketService.disconnectRoom();
+    socketService.stopBackgroundService();
     emit(OrderWaiting(driverActive: false));
   }
 
-  _onOrderInit(streamData, currentPos) {
+  _onOrderInit(streamData, currentPos) async {
+    await getIt.get<FlutterSecureStorage>().write(key: 'orderData', value: streamData.data);
     final decodedData = OrderInitData.fromJson(jsonDecode(streamData.data));
     final currentRoute = PolylinePoints().decodePolyline(decodedData.routes.first.overviewPolyline!.points!);
     emit(
@@ -96,6 +145,7 @@ class OrderCubit extends Cubit<OrderState> {
         currentRoute: currentRoute,
         passengerPos: decodedData.passengerPos,
         passengerReviewAVG: decodedData.passengerReviewAVG,
+        passengerPickedUp: false,
         initialPos: LatLng(
           currentPos.latitude,
           currentPos.longitude,
@@ -106,5 +156,20 @@ class OrderCubit extends Cubit<OrderState> {
 
   _onOrderCancel() {
     emit(OrderWaiting(driverActive: false, errorMessage: 'Az utas visszautasította'));
+  }
+
+  Future<bool> _checkPermissions() async {
+    final permissions = [Permission.location, Permission.locationAlways];
+    for (Permission permission in permissions) {
+      while (await permission.isDenied) {
+        if (permission == Permission.locationAlways) {
+          await showDialog(
+              context: navigatorKey.currentContext!, builder: (ctx) => BackgroundLocationPermissionDialog());
+        }
+        await permission.request();
+      }
+    }
+    final isGranted = [await Permission.location.isGranted, await Permission.locationAlways.isGranted];
+    return isGranted.every((permissionGranted) => permissionGranted);
   }
 }

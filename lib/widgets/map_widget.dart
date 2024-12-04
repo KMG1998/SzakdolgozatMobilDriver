@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:szakdolgozat_mobil_driver_side/qubit/order/order_cubit.dart';
 
@@ -27,8 +28,21 @@ class _MapWidgetState extends State<MapWidget> {
           width: 500.w,
           height: 500.h,
           child: StreamBuilder(
-            stream: null,
+            stream: Geolocator.getPositionStream(),
             builder: (context, snapshot) {
+              Set<Marker> markers = _buildMarkers(state as OrderActive);
+              if(snapshot.data?.longitude != null){
+                markers.removeWhere((marker) => marker.markerId == MarkerId('driver'));
+                markers.add(
+                  Marker(
+                    markerId: MarkerId('driver'),
+                    position: LatLng(snapshot.data!.latitude, snapshot.data!.longitude),
+                    infoWindow: InfoWindow(
+                      title: 'Ön',
+                    ),
+                  ),
+                );
+              }
               return GoogleMap(
                 mapType: MapType.hybrid,
                 initialCameraPosition: CameraPosition(
@@ -42,38 +56,7 @@ class _MapWidgetState extends State<MapWidget> {
                 onMapCreated: (GoogleMapController controller) {
                   _controller.complete(controller);
                 },
-                markers: {
-                  Marker(
-                      markerId: MarkerId('driver'),
-                      position: LatLng(
-                        widget.initialPos.latitude,
-                        widget.initialPos.longitude,
-                      ),
-                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-                      infoWindow: InfoWindow(
-                        title: 'Ön',
-                      )),
-                  Marker(
-                      markerId: MarkerId('passenger'),
-                      position: LatLng(
-                        (state as OrderActive).passengerPos.latitude,
-                        (state).passengerPos.longitude,
-                      ),
-                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-                      infoWindow: InfoWindow(
-                        title: 'Utas',
-                      )),
-                  Marker(
-                      markerId: MarkerId('destination'),
-                      position: LatLng(
-                        (state).currentRoute.last.latitude,
-                        (state).currentRoute.last.longitude,
-                      ),
-                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-                      infoWindow: InfoWindow(
-                        title: 'Úticél',
-                      )),
-                },
+                markers: markers,
                 polylines: {
                   Polyline(
                     polylineId: const PolylineId('direction_polyline'),
@@ -88,5 +71,37 @@ class _MapWidgetState extends State<MapWidget> {
         );
       },
     );
+  }
+
+  Set<Marker> _buildMarkers(OrderActive state) {
+    final markers = {
+      Marker(
+        markerId: MarkerId('destination'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        position: LatLng(
+          (state).currentRoute.last.latitude,
+          (state).currentRoute.last.longitude,
+        ),
+        infoWindow: InfoWindow(
+          title: 'Úticél',
+        ),
+      ),
+    };
+    if (!state.passengerPickedUp) {
+      markers.add(
+        Marker(
+          markerId: MarkerId('passenger'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+          position: LatLng(
+            (state).passengerPos.latitude,
+            (state).passengerPos.longitude,
+          ),
+          infoWindow: InfoWindow(
+            title: 'Utas',
+          ),
+        ),
+      );
+    }
+    return markers;
   }
 }

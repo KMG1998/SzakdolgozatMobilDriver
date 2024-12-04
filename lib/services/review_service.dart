@@ -4,7 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
+import 'package:szakdolgozat_mobil_driver_side/main.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/order_review.dart';
+import 'package:szakdolgozat_mobil_driver_side/routes/app_routes.dart';
 
 class ReviewService{
   final _dio = Dio(BaseOptions(
@@ -27,6 +29,14 @@ class ReviewService{
         .add(InterceptorsWrapper(onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
       options.headers['cookie'] = 'token=${await getIt.get<FlutterSecureStorage>().read(key:'token')};';
       handler.next(options);
+    }));
+    _dio.interceptors
+        .add(InterceptorsWrapper(onResponse: (Response response, ResponseInterceptorHandler handler) {
+      if (response.statusCode == 401) {
+        navigatorKey.currentState?.pushNamed(AppRoutes.loginScreen);
+        return;
+      }
+      handler.next(response);
     }));
   }
 

@@ -30,6 +30,7 @@ class Assets {
   static const String modelsVehicle = 'lib/models/vehicle.dart';
   static const String orderOrderCubit = 'lib/qubit/order/order_cubit.dart';
   static const String orderOrderState = 'lib/qubit/order/order_state.dart';
+  static const String popupsBackgroundLocationPermissionDialog = 'lib/core/popups/background_location_permission_dialog.dart';
   static const String popupsChangePasswordDialog = 'lib/core/popups/change_password_dialog.dart';
   static const String popupsForgotPasswordDialog = 'lib/core/popups/forgot_password_dialog.dart';
   static const String popupsOrderReviewDialog = 'lib/core/popups/order_review_dialog.dart';
@@ -43,7 +44,7 @@ class Assets {
   static const String servicesReviewService = 'lib/services/review_service.dart';
   static const String servicesSocketService = 'lib/services/socket_service.dart';
   static const String servicesUserService = 'lib/services/user_service.dart';
-  static const String servicesVehicleToUserService = 'lib/services/vehicle_service.dart';
+  static const String servicesVehicleService = 'lib/services/vehicle_service.dart';
   static const String splashSplashScreen = 'lib/pages/splash/splash_screen.dart';
   static const String themeAppDecoration = 'lib/theme/app_decoration.dart';
   static const String themeCustomButtonStyle = 'lib/theme/custom_button_style.dart';
