@@ -2,7 +2,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:szakdolgozat_mobil_driver_side/theme/theme_helper.dart';
 
-/// A class that offers pre-defined button styles for customizing button appearance.
 class CustomButtonStyles {
   // Outline button style
   static ButtonStyle get outlineBlack => OutlinedButton.styleFrom(

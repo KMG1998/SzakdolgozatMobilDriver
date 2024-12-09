@@ -18,6 +18,7 @@ class OrderActive extends OrderState {
   final List<PointLatLng> currentRoute;
   final LatLng initialPos;
   final LatLng passengerPos;
+  final int price;
   final bool passengerPickedUp;
   final double? passengerReviewAVG;
 
@@ -26,7 +27,8 @@ class OrderActive extends OrderState {
       required this.initialPos,
       required this.passengerPos,
       required this.passengerReviewAVG,
-      required this.passengerPickedUp});
+      required this.passengerPickedUp,
+      required this.price});
 
   OrderActive copyWith({
     List<PointLatLng>? currentRoute,
@@ -34,6 +36,7 @@ class OrderActive extends OrderState {
     LatLng? passengerPos,
     bool? passengerPickedUp,
     double? passengerReviewAVG,
+    int? price,
   }) {
     return OrderActive(
       currentRoute: currentRoute ?? this.currentRoute,
@@ -41,6 +44,7 @@ class OrderActive extends OrderState {
       passengerPos: passengerPos ?? this.passengerPos,
       passengerReviewAVG: passengerReviewAVG ?? this.passengerReviewAVG,
       passengerPickedUp: passengerPickedUp ?? this.passengerPickedUp,
+      price: price ?? this.price,
     );
   }
 }

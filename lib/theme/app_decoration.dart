@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:szakdolgozat_mobil_driver_side/theme/theme_helper.dart';
 
 class AppDecoration {
-  // Fill decorations
   static BoxDecoration get fillOnSecondaryContainer => BoxDecoration(
     color: theme.colorScheme.onSecondaryContainer,
   );
@@ -12,7 +11,6 @@ class AppDecoration {
     color: theme.colorScheme.primary,
   );
 
-  // Gradient decorations
   static BoxDecoration get gradientPrimaryContainerToOnSecondaryContainer => BoxDecoration(
     gradient: LinearGradient(
       begin: Alignment(0.5, 0),

@@ -5,13 +5,20 @@ class OrderInitData {
   final double? passengerReviewAVG;
   final LatLng passengerPos;
   final List<DirectionsRoute> routes;
+  final int price;
 
-  OrderInitData({required this.passengerPos, required this.routes, required this.passengerReviewAVG});
+  OrderInitData({
+    required this.passengerPos,
+    required this.routes,
+    required this.passengerReviewAVG,
+    required this.price,
+  });
 
   OrderInitData.fromJson(Map<String, dynamic> json)
       : routes = (json['routes'] as List).map((e) => DirectionsRoute.fromMap(e)).toList(),
         passengerReviewAVG = json['passengerReviewAVG'] is int
             ? (json['passengerReviewAVG'] as int).toDouble()
             : json['passengerReviewAVG'] as double?,
-        passengerPos = LatLng(json['passengerPos']['latitude'], json['passengerPos']['longitude']);
+        passengerPos = LatLng(json['passengerPos']['latitude'], json['passengerPos']['longitude']),
+        price = json['price'] as int;
 }

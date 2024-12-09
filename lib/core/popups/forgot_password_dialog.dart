@@ -64,7 +64,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
           Text(
             'Kérjük, adja meg a belépéshez használt e-mail címét. '
             'Amennyiben van regisztrált felhasználó a megadott e-mail címmel, küldeni fogunk egy e-mailt egy átmeneti jelszóval a megadott címre.',
-            style: theme.textTheme.titleMedium,
+            style: theme.textTheme.bodyLarge,
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 20),
@@ -95,7 +95,10 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
   _successContent() {
     return Center(
       child: Text(
-          'Sikeres művelet! Amennyiben létezik a megadott e-mail címmel használó a rendszerünkben, kiküldtünk egy átmenetei jelszót tartalmazó emailt.'),
+        'Sikeres művelet! Amennyiben létezik a megadott e-mail címmel használó a'
+            'rendszerünkben, kiküldtünk egy átmenetei jelszót tartalmazó emailt.',
+        style: theme.textTheme.bodyLarge,
+      ),
     );
   }
 }

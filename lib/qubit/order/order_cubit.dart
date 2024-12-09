@@ -54,6 +54,7 @@ class OrderCubit extends Cubit<OrderState> {
         passengerPos: orderData.passengerPos,
         passengerReviewAVG: orderData.passengerReviewAVG,
         passengerPickedUp: false,
+        price: orderData.price,
         initialPos: LatLng(
           currentPos.latitude,
           currentPos.longitude,
@@ -146,6 +147,7 @@ class OrderCubit extends Cubit<OrderState> {
         passengerPos: decodedData.passengerPos,
         passengerReviewAVG: decodedData.passengerReviewAVG,
         passengerPickedUp: false,
+        price: decodedData.price,
         initialPos: LatLng(
           currentPos.latitude,
           currentPos.longitude,
@@ -155,6 +157,7 @@ class OrderCubit extends Cubit<OrderState> {
   }
 
   _onOrderCancel() {
+    _logger.e('In order cancel');
     emit(OrderWaiting(driverActive: false, errorMessage: 'Az utas visszautasította'));
   }
 

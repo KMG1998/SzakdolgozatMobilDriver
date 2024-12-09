@@ -34,7 +34,7 @@ class OrderService {
     _dio.interceptors
         .add(InterceptorsWrapper(onResponse: (Response response, ResponseInterceptorHandler handler) {
       if (response.statusCode == 401) {
-        navigatorKey.currentState?.pushNamed(AppRoutes.loginScreen);
+        navigatorKey.currentState?.pushReplacementNamed(AppRoutes.loginScreen);
         return;
       }
       handler.next(response);

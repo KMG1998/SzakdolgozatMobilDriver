@@ -94,10 +94,21 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
                       width: double.infinity,
                       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                       color: Colors.white,
-                      child: Text(
-                        'Utas értékelés átlaga: ${state.passengerReviewAVG?.toStringAsFixed(2) ?? 'nincs'}',
-                        style: theme.textTheme.titleLarge,
-                        textAlign: TextAlign.center,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Utas értékelés átlaga: ${state.passengerReviewAVG?.toStringAsFixed(2) ?? 'nincs'}',
+                            style: theme.textTheme.titleLarge,
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            'Fuvar ára: ${state.price} Ft',
+                            style: theme.textTheme.titleLarge,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       )),
                   SizedBox(height: 20),
                   MapWidget(initialPos: state.initialPos),

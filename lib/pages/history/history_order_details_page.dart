@@ -70,8 +70,8 @@ class HistoryOrderDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _createItem('Azonosító: ${selectedOrder.id}'),
-                      _createItem('Indulási pozíció: ${selectedOrder.startAddress}'),
-                      _createItem('Uticél pozíció: ${selectedOrder.destinationAddress}'),
+                      _createItem('Indulási cím: ${selectedOrder.startAddress}'),
+                      _createItem('Uticél cím: ${selectedOrder.destinationAddress}'),
                       _createItem('Létrehozás időpontja: ${DateFormatter.formatTimestamp(selectedOrder.startDateTime)}'),
                       _createItem('Lezárás időpontja: ${DateFormatter.formatTimestamp(selectedOrder.finishDateTime)}'),
                       _createItem(

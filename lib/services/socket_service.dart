@@ -50,7 +50,10 @@ class SocketService {
         _socket.connect();
       }
     });
-    _socket.onDisconnect((e) => _logger.d('disconnect for $e'));
+    _socket.onDisconnect((e) {
+      _logger.d('disconnect for $e');
+      getIt.get<FlutterSecureStorage>().delete(key: 'roomId');
+    });
   }
 
   void connectToRoom({
@@ -61,6 +64,7 @@ class SocketService {
     _socket.emit(SocketDataType.joinRoom.name, roomId);
     _socket.on(SocketDataType.passengerCancel.name, (data) {
       try {
+        _logger.e('received passenger cancel');
         onPassengerCancel();
         stopBackgroundService();
         disconnectRoom();
