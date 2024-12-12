@@ -7,7 +7,6 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:logger/logger.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/enums.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
@@ -23,10 +22,7 @@ class SocketService {
 
   final List<String> listenerNames = [SocketDataType.orderInit.name, SocketDataType.passengerCancel.name];
 
-  static final _logger = Logger();
-
   SocketService() {
-    _logger.d('create stream service');
     _backgroundService.configure(
         iosConfiguration: IosConfiguration(
           autoStart: false,
@@ -39,19 +35,15 @@ class SocketService {
           isForegroundMode: true,
           autoStartOnBoot: false,
         ));
-    _logger.d('BS configured');
     _socket.connect();
     _socket.onConnect((e) {
-      _logger.d('websocket connect ok');
     });
     _socket.onError((e) {
-      _logger.e('error: $e');
       if (!_socket.connected) {
         _socket.connect();
       }
     });
     _socket.onDisconnect((e) {
-      _logger.d('disconnect for $e');
       getIt.get<FlutterSecureStorage>().delete(key: 'roomId');
     });
   }
@@ -63,18 +55,12 @@ class SocketService {
   }) {
     _socket.emit(SocketDataType.joinRoom.name, roomId);
     _socket.on(SocketDataType.passengerCancel.name, (data) {
-      try {
-        _logger.e('received passenger cancel');
         onPassengerCancel();
         stopBackgroundService();
         disconnectRoom();
-      } catch (e) {
-        _logger.e(e);
-      }
     });
     _socket.on(SocketDataType.orderInit.name, (data) async {
       startBackgroundService();
-      _logger.d('received orderInit');
       final streamData = StreamData.fromJson(jsonDecode(data));
       onOrderInit(streamData, await Geolocator.getCurrentPosition());
     });
@@ -91,16 +77,12 @@ class SocketService {
   }
 
   void disconnectRoom() async {
-    try {
       final roomId = await getIt.get<FlutterSecureStorage>().read(key: 'roomId');
       _socket.emit(SocketDataType.leaveRoom.name, roomId);
       for (String listenerName in listenerNames) {
         _socket.off(listenerName);
       }
       getIt.get<FlutterSecureStorage>().delete(key: 'roomId');
-    } catch (e) {
-      _logger.e('disconnect error $e');
-    }
   }
 
   void startBackgroundService() async {
@@ -125,13 +107,6 @@ class SocketService {
     });
   }
 
-  @pragma('vm:entry-point')
-  Future<bool> onIosBackground(ServiceInstance service) async {
-    WidgetsFlutterBinding.ensureInitialized();
-    DartPluginRegistrant.ensureInitialized();
-    return true;
-  }
-
   static Future<void> _emitPosition() async {
     final roomId = await getIt.get<FlutterSecureStorage>().read(key: 'roomId');
     final token = await getIt.get<FlutterSecureStorage>().read(key: 'token');
@@ -145,4 +120,14 @@ class SocketService {
           'data': LatLng(currentLocation.latitude, currentLocation.longitude)
         }));
   }
+
+
+  @pragma('vm:entry-point')
+  Future<bool> onIosBackground(ServiceInstance service) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    DartPluginRegistrant.ensureInitialized();
+    return true;
+  }
+
+
 }

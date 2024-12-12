@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:logger/logger.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
 import 'package:szakdolgozat_mobil_driver_side/main.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/order.dart';
@@ -22,9 +21,6 @@ class OrderService {
     responseType: ResponseType.json,
   ));
 
-  final _logger = Logger();
-
-
   OrderService() {
     _dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
@@ -42,13 +38,11 @@ class OrderService {
   }
 
   Future<String> setDriverAvailable() async {
-    _logger.d('sent available request');
     final currentPos = await Geolocator.getCurrentPosition();
     final resp = await _dio.post('/setDriverAvailable', data: {
       'driverLat': currentPos.latitude,
       'driverLongit': currentPos.longitude,
     });
-    _logger.d('received available response');
     return resp.data as String;
   }
 

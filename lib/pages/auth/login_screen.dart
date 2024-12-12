@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/popups/forgot_password_dialog.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/toast_wrapper.dart';

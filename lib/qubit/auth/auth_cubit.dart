@@ -1,8 +1,7 @@
-import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:logger/logger.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/toast_wrapper.dart';
 import 'package:szakdolgozat_mobil_driver_side/main.dart';
@@ -20,8 +19,6 @@ class AuthCubit extends Cubit<AuthState> {
   FocusNode passwordFocus = FocusNode();
 
   final formKey = GlobalKey<FormState>();
-
-  final logger = Logger();
 
   reset() {
     emit(AuthInit());
@@ -80,7 +77,6 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthSuccess());
       }
     } catch (e) {
-      logger.e(e);
       emit(AuthFail(e));
     }
   }

@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
 import 'package:szakdolgozat_mobil_driver_side/main.dart';
-import 'package:szakdolgozat_mobil_driver_side/models/user.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/vehicle.dart';
 import 'package:szakdolgozat_mobil_driver_side/routes/app_routes.dart';
 
@@ -36,6 +35,7 @@ class VehicleService {
       handler.next(response);
     }));
   }
+
 
   Future<Vehicle?> getOwnVehicle() async {
     var resp = await _dio.get('/getOwnVehicle');

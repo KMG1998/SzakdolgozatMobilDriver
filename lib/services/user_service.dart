@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:logger/logger.dart';
 import 'package:szakdolgozat_mobil_driver_side/main.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/user.dart';
 import 'package:szakdolgozat_mobil_driver_side/routes/app_routes.dart';
@@ -23,8 +20,6 @@ class UserService {
       },
     ),
   );
-
-  final _logger = Logger();
 
   UserService() {
     _dio.interceptors
@@ -93,7 +88,6 @@ class UserService {
       );
       return resp.statusCode == 200;
     } catch (e) {
-      _logger.e(e);
       return false;
     }
   }
@@ -109,7 +103,6 @@ class UserService {
       );
       return resp.statusCode == 200;
     } catch (e) {
-      _logger.e(e);
       return false;
     }
   }
@@ -124,7 +117,6 @@ class UserService {
       );
       return resp.statusCode == 200;
     } catch (e) {
-      _logger.e(e);
       return false;
     }
   }

@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/popups/change_password_dialog.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/toast_wrapper.dart';
-import 'package:szakdolgozat_mobil_driver_side/core/utils/validators.dart';
 import 'package:szakdolgozat_mobil_driver_side/generated/assets.gen.dart';
 import 'package:szakdolgozat_mobil_driver_side/qubit/auth/auth_cubit.dart';
 import 'package:szakdolgozat_mobil_driver_side/qubit/user/user_cubit.dart';
@@ -14,7 +13,6 @@ import 'package:szakdolgozat_mobil_driver_side/theme/custom_button_style.dart';
 import 'package:szakdolgozat_mobil_driver_side/theme/theme_helper.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/custom_nav_bar.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/custom_outlined_button.dart';
-import 'package:szakdolgozat_mobil_driver_side/widgets/custom_text_form_field.dart';
 
 class DriverProfilePage extends StatefulWidget {
   const DriverProfilePage({super.key});

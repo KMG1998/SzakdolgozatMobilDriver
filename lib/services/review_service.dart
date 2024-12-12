@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:logger/logger.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
 import 'package:szakdolgozat_mobil_driver_side/main.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/order_review.dart';
@@ -20,9 +19,6 @@ class ReviewService{
       'Origin': 'mobileApp',
     },
   ));
-
-
-  final _logger = Logger();
 
   ReviewService() {
     _dio.interceptors

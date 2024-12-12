@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:logger/logger.dart';
 import 'package:szakdolgozat_mobil_driver_side/qubit/order/order_cubit.dart';
 import 'package:szakdolgozat_mobil_driver_side/theme/theme_helper.dart';
 import 'package:szakdolgozat_mobil_driver_side/widgets/custom_nav_bar.dart';
@@ -20,7 +19,6 @@ class DriverDashboardScreen extends StatefulWidget {
 }
 
 class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
-  final _logger = Logger();
 
   bool passengerEntered = false;
 

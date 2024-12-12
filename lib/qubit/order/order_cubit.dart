@@ -1,13 +1,11 @@
 import 'dart:convert';
-
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/enums.dart';
 import 'package:szakdolgozat_mobil_driver_side/core/popups/background_location_permission_dialog.dart';
@@ -15,7 +13,6 @@ import 'package:szakdolgozat_mobil_driver_side/core/popups/order_review_dialog.d
 import 'package:szakdolgozat_mobil_driver_side/core/utils/service_locator.dart';
 import 'package:szakdolgozat_mobil_driver_side/main.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/order_review.dart';
-import 'package:szakdolgozat_mobil_driver_side/models/stream_data.dart';
 import 'package:szakdolgozat_mobil_driver_side/models/order_init_data.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/order_service.dart';
 import 'package:szakdolgozat_mobil_driver_side/services/socket_service.dart';
@@ -24,7 +21,6 @@ part 'order_state.dart';
 
 class OrderCubit extends Cubit<OrderState> {
   OrderCubit() : super(OrderInit());
-  final _logger = Logger();
 
   initState() async {
     emit(OrderLoading());
@@ -88,7 +84,6 @@ class OrderCubit extends Cubit<OrderState> {
       emit(OrderWaiting(driverActive: false, errorMessage: 'Ismeretlen hiba'));
     } catch (e) {
       emit(OrderWaiting(driverActive: false, errorMessage: 'Sikertelen aktiválás'));
-      _logger.e(e);
     }
   }
 
@@ -104,7 +99,6 @@ class OrderCubit extends Cubit<OrderState> {
       }
       emit(OrderWaiting(driverActive: true, errorMessage: 'Ismeretlen hiba'));
     } catch (e) {
-      _logger.e(e);
       emit(OrderWaiting(driverActive: true, errorMessage: 'Sikertelen deaktiválás'));
     }
   }
@@ -157,7 +151,6 @@ class OrderCubit extends Cubit<OrderState> {
   }
 
   _onOrderCancel() {
-    _logger.e('In order cancel');
     emit(OrderWaiting(driverActive: false, errorMessage: 'Az utas visszautasította'));
   }
 
